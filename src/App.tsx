@@ -2,6 +2,10 @@ import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { FloatingContact } from '@/components/FloatingContact'
 import { Intro } from '@/components/Intro'
 import { Nav } from '@/components/Nav'
+import { CartDrawer } from '@/components/shop/CartDrawer'
+import { CartPill, CartToast } from '@/components/shop/CartUI'
+import { ProductSheet } from '@/components/shop/ProductSheet'
+import { ShopProvider } from '@/lib/cart'
 import { QuienesSomos } from '@/pages/QuienesSomos'
 import { Arreglos } from '@/sections/Arreglos'
 import { Contacto } from '@/sections/Contacto'
@@ -41,7 +45,7 @@ export default function App() {
   }, [enPagina]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <>
+    <ShopProvider>
       <Intro onDone={onDone} />
       <Nav solid={enPagina} />
       {enPagina ? (
@@ -58,6 +62,10 @@ export default function App() {
       )}
       <Footer />
       <FloatingContact visible={ready} />
-    </>
+      <CartPill visible={ready} />
+      <CartToast />
+      <ProductSheet />
+      <CartDrawer />
+    </ShopProvider>
   )
 }

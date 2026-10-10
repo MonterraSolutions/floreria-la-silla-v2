@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { WhatsAppIcon } from '@/components/icons'
+import { CartButton } from '@/components/shop/CartUI'
 import { SocialTooltip } from '@/components/ui/social-media'
 import { StatusPill } from '@/components/StatusPill'
 import { SOCIALS } from '@/lib/socials'
@@ -82,7 +83,7 @@ export function Nav({ solid = false }: { solid?: boolean }) {
           ))}
         </ul>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
           <a
             href={wa()}
             target="_blank"
@@ -95,6 +96,7 @@ export function Nav({ solid = false }: { solid?: boolean }) {
             <WhatsAppIcon className="size-4" />
             Hacer pedido
           </a>
+          <CartButton className={scrolled ? 'ring-ink/15' : 'ring-paper/40 hover:bg-paper hover:text-ink'} />
           <button
             type="button"
             onClick={() => setOpen(true)}

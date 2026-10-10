@@ -12,6 +12,10 @@
   --color-ink: #3a3a3e;
   --color-ink-soft: #4d4d52;
   --color-stone: #76767b;
+  /* v2: tienda (inspiración boutique: recuadros parejos sobre un fondo cálido) */
+  --color-cream: #fcf8f6;
+  --color-tile: #f5ece8;
+  --color-tile-deep: #efe1db;
 
   /* tokens que esperan los componentes shadcn */
   --color-background: var(--color-paper);
@@ -53,7 +57,8 @@ body {
   overflow-x: clip;
 }
 
-body.is-locked {
+body.is-locked,
+html.is-modal {
   overflow: hidden;
 }
 

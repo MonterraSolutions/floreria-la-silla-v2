@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
-import { WhatsAppIcon } from '@/components/icons'
 import { CartButton } from '@/components/shop/CartUI'
 import { SocialTooltip } from '@/components/ui/social-media'
 import { StatusPill } from '@/components/StatusPill'
 import { SOCIALS } from '@/lib/socials'
-import { wa } from '@/lib/site'
 import { cn } from '@/lib/utils'
 
 type Link = { href: string; label: string; children?: { href: string; label: string }[] }
@@ -84,18 +82,6 @@ export function Nav({ solid = false }: { solid?: boolean }) {
         </ul>
 
         <div className="flex items-center gap-2.5 sm:gap-3">
-          <a
-            href={wa()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              'hidden items-center gap-2 rounded-sm px-5 py-2.5 text-[0.75rem] font-normal tracking-[0.14em] uppercase transition sm:inline-flex',
-              scrolled ? 'bg-ink text-paper hover:bg-rose' : 'bg-paper text-ink hover:bg-blush',
-            )}
-          >
-            <WhatsAppIcon className="size-4" />
-            Hacer pedido
-          </a>
           <CartButton className={scrolled ? 'ring-ink/15' : 'ring-paper/40 hover:bg-paper hover:text-ink'} />
           <button
             type="button"

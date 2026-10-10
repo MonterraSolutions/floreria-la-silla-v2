@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
-import { WhatsAppIcon } from '@/components/icons'
-import { SITE, wa } from '@/lib/site'
+import { SITE } from '@/lib/site'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -44,13 +43,10 @@ export function Hero({ play }: { play: boolean }) {
 
         <motion.div {...rise(0.5, play)} className="mt-9 flex flex-wrap items-center gap-3">
           <a
-            href={wa()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-12 items-center gap-2.5 rounded-sm bg-paper px-7 text-[0.8rem] font-normal tracking-[0.16em] text-ink uppercase transition hover:bg-blush"
+            href="#cotizar"
+            className="inline-flex min-h-12 items-center rounded-sm bg-paper px-7 text-[0.8rem] font-normal tracking-[0.16em] text-ink uppercase transition hover:bg-blush"
           >
-            <WhatsAppIcon className="size-4" />
-            Hacer un pedido
+            Cotizar evento
           </a>
           <a
             href="#arreglos"

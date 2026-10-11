@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { CalendarDays, ChevronRight, Clock, CreditCard, ShoppingBag, Truck } from 'lucide-react'
 import { Reveal } from '@/components/Reveal'
 import { ProductCard } from '@/components/shop/ProductCard'
@@ -18,37 +18,21 @@ const INFO = [
 ]
 
 const label = 'text-[0.68rem] font-medium tracking-[0.24em] text-stone uppercase'
-const rowId = (c: CategoriaId) => `fila-${c}`
-
-/** Qué fila está a la vista, para marcarla en la barra lateral. */
-function useActiveRow() {
-  const [active, setActive] = useState<CategoriaId>(CATEGORIAS[0].id)
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        const hit = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0]
-        if (hit) setActive(hit.target.id.replace('fila-', '') as CategoriaId)
-      },
-      { rootMargin: '-35% 0px -55% 0px' },
-    )
-    CATEGORIAS.forEach((c) => {
-      const el = document.getElementById(rowId(c.id))
-      if (el) io.observe(el)
-    })
-    return () => io.disconnect()
-  }, [])
-  return active
-}
-
-/** Una fila por categoría: carrusel, y "ver todos" la abre en cuadrícula. */
-function Fila({ cat }: { cat: (typeof CATEGORIAS)[number] }) {
+/** La categoría elegida: carrusel, y "ver todos" la abre en cuadrícula. Cambia en su lugar, sin mover la página. */
+function Panel({ cat }: { cat: (typeof CATEGORIAS)[number] }) {
   const [all, setAll] = useState(false)
   const items = PRODUCTOS.filter((p) => p.cat === cat.id)
 
   return (
-    <div id={rowId(cat.id)} className="scroll-mt-24 border-t border-ink/10 py-11 first:border-t-0 first:pt-0 md:py-14">
-      <div className="mb-7 flex items-end justify-between gap-4">
-        <h3 className="font-display text-[clamp(1.6rem,2.8vw,2.3rem)] leading-none text-ink">{cat.title}</h3>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -6 }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      className="pb-10"
+    >
+      <div className="mb-4 flex items-end justify-end gap-4 lg:mb-7 lg:justify-between">
+        <h3 className="max-lg:sr-only font-display text-[clamp(1.6rem,2.8vw,2.3rem)] leading-none text-ink">{cat.title}</h3>
         <button
           type="button"
           onClick={() => setAll((v) => !v)}
@@ -72,32 +56,36 @@ function Fila({ cat }: { cat: (typeof CATEGORIAS)[number] }) {
           ))}
         </motion.div>
       ) : (
-        <Carousel label={cat.title} itemClassName="w-[64%] sm:w-[calc((100%-2rem)/2.6)] md:w-[calc((100%-2rem)/3)] xl:w-[calc((100%-3rem)/4)]">
+        <Carousel label={cat.title} resetKey={cat.id} itemClassName="w-[64%] sm:w-[calc((100%-2rem)/2.6)] md:w-[calc((100%-2rem)/3)] xl:w-[calc((100%-3rem)/4)]">
           {items.map((p) => (
             <ProductCard key={p.id} p={p} />
           ))}
         </Carousel>
       )}
-    </div>
+    </motion.div>
   )
 }
 
-function Sidebar({ active }: { active: CategoriaId }) {
+function Sidebar({ active, onPick }: { active: CategoriaId; onPick: (c: CategoriaId) => void }) {
   const { count, subtotal, porConfirmar, setCartOpen } = useShop()
   return (
     <aside className="hidden lg:block">
-      <div className="sticky top-24 flex flex-col">
+      <div className="flex flex-col">
         <p className={label}>Categorías:</p>
-        <ul className="mt-4 flex flex-col">
+        <ul className="mt-4 flex flex-col" role="tablist" aria-label="Categorías" aria-orientation="vertical">
           {CATEGORIAS.map((c) => (
             <li key={c.id}>
-              <a
-                href={`#${rowId(c.id)}`}
-                className={cn('group flex items-center gap-3 py-1.5 font-display text-[1.22rem] leading-snug transition-colors', active === c.id ? 'text-rose' : 'text-ink/75 hover:text-ink')}
+              <button
+                type="button"
+                role="tab"
+                aria-selected={active === c.id}
+                onClick={() => onPick(c.id)}
+                className={cn('group flex w-full cursor-pointer items-center gap-3 py-1.5 text-left font-display text-[1.22rem] leading-snug transition-colors', active === c.id ? 'text-rose' : 'text-ink/75 hover:text-ink')}
               >
                 <span className={cn('h-px shrink-0 bg-rose transition-all duration-500', active === c.id ? 'w-5' : 'w-0 group-hover:w-3')} />
                 {c.name}
-              </a>
+                <span className="ml-auto font-sans text-[0.75rem] text-stone/70 tabular-nums">{PRODUCTOS.filter((p) => p.cat === c.id).length}</span>
+              </button>
             </li>
           ))}
         </ul>
@@ -152,7 +140,8 @@ function Sidebar({ active }: { active: CategoriaId }) {
 }
 
 export function Arreglos() {
-  const active = useActiveRow()
+  const [active, setActive] = useState<CategoriaId>(CATEGORIAS[0].id)
+  const cat = CATEGORIAS.find((c) => c.id === active)!
 
   return (
     <section id="flores" className="scroll-mt-20 bg-cream py-20 md:py-28">
@@ -167,31 +156,37 @@ export function Arreglos() {
         </Reveal>
 
         {/* categorías en celular y tablet: texto con línea fina bajo la activa */}
-        <div className="-mx-4 mt-8 overflow-x-auto px-4 [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
-          <ul className="mx-auto flex w-max items-center border-b border-ink/10">
+        <div className="-mx-4 mt-8 overflow-x-auto px-4 [mask-image:linear-gradient(to_right,transparent,#000_1rem,#000_calc(100%-2.5rem),transparent)] [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
+          <ul className="mx-auto flex w-max items-center border-b border-ink/10" role="tablist" aria-label="Categorías">
             {CATEGORIAS.map((c) => (
               <li key={c.id}>
-                <a
-                  href={`#${rowId(c.id)}`}
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={active === c.id}
+                  onClick={(e) => {
+                    setActive(c.id)
+                    e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+                  }}
                   className={cn(
-                    'relative inline-flex min-h-11 items-center px-3.5 text-[0.7rem] font-medium tracking-[0.18em] uppercase transition-colors',
+                    'relative inline-flex min-h-11 cursor-pointer items-center px-3.5 text-[0.7rem] font-medium tracking-[0.18em] uppercase transition-colors',
                     active === c.id ? 'text-rose' : 'text-stone',
                   )}
                 >
                   {c.name}
                   {active === c.id && <motion.span layoutId="cat-line" className="absolute inset-x-3.5 -bottom-px h-[2px] bg-rose" />}
-                </a>
+                </button>
               </li>
             ))}
           </ul>
         </div>
 
         <div className="mt-10 grid gap-10 lg:mt-16 lg:grid-cols-[14.5rem_1fr] lg:gap-12 xl:grid-cols-[16rem_1fr]">
-          <Sidebar active={active} />
-          <div className="min-w-0 lg:border-l lg:border-ink/10 lg:pl-12">
-            {CATEGORIAS.map((c) => (
-              <Fila key={c.id} cat={c} />
-            ))}
+          <Sidebar active={active} onPick={setActive} />
+          <div className="min-w-0 lg:border-l lg:border-ink/10 lg:pl-12" role="tabpanel" aria-label={cat.title}>
+            <AnimatePresence mode="wait" initial={false}>
+              <Panel key={cat.id} cat={cat} />
+            </AnimatePresence>
             <p className="border-t border-ink/10 pt-6 text-[0.82rem] text-stone">* Precios más envío. La flor está sujeta a disponibilidad de color y temporada.</p>
           </div>
         </div>

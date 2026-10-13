@@ -11,11 +11,11 @@ type Link = { href: string; label: string; children?: { href: string; label: str
 
 const LINKS: Link[] = [
   {
-    href: '#flores',
-    label: 'Flores',
+    href: '#arreglos',
+    label: 'Arreglos',
     children: [
       { href: '#arreglos', label: 'Arreglos ocasionales' },
-      { href: '#funeraria', label: 'Funeraria' },
+      { href: '#funeraria', label: 'Arreglos de condolencias' },
     ],
   },
   { href: '#eventos', label: 'Eventos' },

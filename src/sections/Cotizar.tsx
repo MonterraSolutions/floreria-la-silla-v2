@@ -1,6 +1,7 @@
-import { useId, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { WhatsAppIcon } from '@/components/icons'
 import { Reveal } from '@/components/Reveal'
+import { useShop } from '@/lib/cart'
 import { SITE, wa } from '@/lib/site'
 import { cn } from '@/lib/utils'
 
@@ -34,9 +35,14 @@ function Campo({ label, htmlFor, optional, className, children }: { label: strin
 }
 
 export function Cotizar() {
-  const [f, setF] = useState({ evento: '', fecha: '', invitados: '', lugar: '', necesitas: '', presupuesto: '', nombre: '' })
+  const { nombre, setNombre } = useShop()
+  const [f, setF] = useState({ evento: '', fecha: '', invitados: '', lugar: '', necesitas: '', presupuesto: '', nombre })
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setF({ ...f, [k]: e.target.value })
   const id = useId()
+  // Si ya lo escribió en el pedido, aparece aquí; si lo borra o lo cambia, se respeta.
+  useEffect(() => {
+    if (nombre) setF((s) => (s.nombre ? s : { ...s, nombre }))
+  }, [nombre])
   const ids = Object.fromEntries(Object.keys(f).map((k) => [k, `${id}-${k}`])) as Record<keyof typeof f, string>
 
   const mensaje = [
@@ -53,7 +59,7 @@ export function Cotizar() {
   const listo = f.evento && f.fecha && f.nombre.trim().length > 1
 
   return (
-    <section id="cotizar" className="scroll-mt-20 bg-blush-50 py-20 md:py-28">
+    <section id="cotizar" className="scroll-mt-16 bg-blush-50 py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <Reveal className="max-w-2xl">
           <h2 className="font-display text-[clamp(2.2rem,4.6vw,3.6rem)] leading-[1] text-ink">Cotiza las flores de tu evento</h2>
@@ -107,7 +113,7 @@ export function Cotizar() {
                 </select>
               </Campo>
               <Campo label="Tu nombre" htmlFor={ids.nombre}>
-                <input id={ids.nombre} value={f.nombre} onChange={set('nombre')} required placeholder="Nombre y apellido" className={field} />
+                <input id={ids.nombre} value={f.nombre} onChange={set('nombre')} onBlur={(e) => setNombre(e.target.value)} required placeholder="Nombre y apellido" className={field} />
               </Campo>
 
               <div className="sm:col-span-2">

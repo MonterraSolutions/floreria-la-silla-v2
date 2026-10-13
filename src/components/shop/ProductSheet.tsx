@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { CalendarClock, ChevronRight, Flower2, Mail, Minus, Plus, Truck, X } from 'lucide-react'
+import { ChevronRight, Minus, Plus, X } from 'lucide-react'
 import { WhatsAppIcon } from '@/components/icons'
-import { Badge, Price, ProductCard } from '@/components/shop/ProductCard'
+import { Price, ProductCard } from '@/components/shop/ProductCard'
+import { TarjetaCampos } from '@/components/shop/TarjetaCampos'
 import { CATEGORIAS, PRODUCTOS, byId, precio } from '@/lib/catalogo'
 import { useShop } from '@/lib/cart'
 import { waPedido } from '@/lib/site'
@@ -11,12 +12,7 @@ import { cn } from '@/lib/utils'
 const TABS = ['Descripción', 'Envío', 'Pago'] as const
 type Tab = (typeof TABS)[number]
 
-const CHIPS = [
-  { icon: Mail, t: 'Tarjeta con tu mensaje' },
-  { icon: Truck, t: 'Entrega a domicilio' },
-  { icon: CalendarClock, t: 'Mismo día antes de las 12' },
-  { icon: Flower2, t: 'Flor de temporada' },
-]
+const CHIPS = ['Tarjeta con tu mensaje', 'Entrega a domicilio', 'Mismo día antes de las 12', 'Flor de temporada']
 
 export function Stepper({ value, onChange, min = 1, small = false }: { value: number; onChange: (n: number) => void; min?: number; small?: boolean }) {
   const btn = cn('grid cursor-pointer place-items-center rounded-full text-ink transition hover:bg-ink/[0.06] disabled:cursor-default disabled:opacity-30', small ? 'size-8' : 'size-11')
@@ -37,7 +33,7 @@ export function Stepper({ value, onChange, min = 1, small = false }: { value: nu
 
 /** Ficha del arreglo: foto grande, precio, pestañas y "más para ver". */
 export function ProductSheet() {
-  const { viewing, view, add, qtyOf, setCartOpen } = useShop()
+  const { viewing, view, add, qtyOf, setCartOpen, tarjetas, setTarjeta } = useShop()
   const p = viewing ? byId(viewing) : undefined
   const [qty, setQty] = useState(1)
   const [tab, setTab] = useState<Tab>('Descripción')
@@ -106,7 +102,6 @@ export function ProductSheet() {
 
               <div className="mt-5 grid gap-7 md:mt-7 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:gap-12">
                 <div className="relative overflow-hidden rounded-[12px] bg-tile ring-1 ring-ink/[0.05]">
-                  {p.badge && <Badge>{p.badge}</Badge>}
                   <motion.img
                     key={p.id}
                     initial={{ opacity: 0, scale: 0.97 }}
@@ -133,7 +128,23 @@ export function ProductSheet() {
                     </p>
                   </div>
 
-                  <div className="mt-6 flex flex-wrap items-center gap-3">
+                  {/* las tarjetas de las piezas que vas a agregar (si ya llevas 1, esta es la 2) */}
+                  <div className="mt-6 flex max-w-md flex-col gap-5">
+                    {Array.from({ length: qty }, (_, k) => {
+                      const i = enPedido + k
+                      const total = enPedido + qty
+                      return (
+                        <TarjetaCampos
+                          key={i}
+                          numero={total > 1 ? `Tarjeta ${i + 1} de ${total}` : undefined}
+                          value={tarjetas[p.id]?.[i]}
+                          onChange={(t) => setTarjeta(p.id, i, t)}
+                        />
+                      )
+                    })}
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap items-center gap-3">
                     <Stepper value={qty} onChange={setQty} />
                     <button
                       type="button"
@@ -192,9 +203,8 @@ export function ProductSheet() {
                   </div>
 
                   <ul className="mt-2 flex flex-wrap gap-2">
-                    {CHIPS.map(({ icon: Icon, t }) => (
-                      <li key={t} className="inline-flex items-center gap-2 rounded-sm bg-paper px-3 py-2 text-[0.85rem] text-ink-soft ring-1 ring-ink/10">
-                        <Icon className="size-4 text-rose" strokeWidth={1.5} />
+                    {CHIPS.map((t) => (
+                      <li key={t} className="inline-flex items-center rounded-sm bg-paper px-3 py-2 text-[0.85rem] text-ink-soft ring-1 ring-ink/10">
                         {t}
                       </li>
                     ))}

@@ -29,30 +29,26 @@ export function Hero({ play }: { play: boolean }) {
       />
 
       <div className="mx-auto w-full max-w-7xl px-4 pt-32 pb-16 md:px-8 md:pb-24">
-        <motion.p {...rise(0.1, play)} className="text-[0.75rem] tracking-[0.3em] text-paper/75 uppercase">
-          Monterrey · Desde {SITE.since}
-        </motion.p>
-
-        <motion.h1 {...rise(0.2, play)} className="mt-5 max-w-3xl font-display text-[clamp(3rem,7vw,6.2rem)] leading-[0.95] font-normal">
+        <motion.h1 {...rise(0.2, play)} className="max-w-3xl font-display text-[clamp(3rem,7vw,6.2rem)] leading-[0.95] font-normal">
           Florería La Silla
         </motion.h1>
 
         <motion.p {...rise(0.35, play)} className="mt-6 max-w-lg text-[1.05rem] leading-relaxed text-paper/85 md:text-lg">
-          Arreglos para toda ocasión, flores para bodas y eventos, y coronas para funeral.
+          Arreglos florales para toda ocasión desde {SITE.since}.
         </motion.p>
 
         <motion.div {...rise(0.5, play)} className="mt-9 flex flex-wrap items-center gap-3">
           <a
-            href="#cotizar"
+            href="#arreglos"
             className="inline-flex min-h-12 items-center rounded-sm bg-paper px-7 text-[0.8rem] font-normal tracking-[0.16em] text-ink uppercase transition hover:bg-blush"
           >
-            Cotizar evento
+            Ver arreglos
           </a>
           <a
-            href="#arreglos"
+            href="#cotizar"
             className="inline-flex min-h-12 items-center rounded-sm px-7 text-[0.8rem] font-normal tracking-[0.16em] text-paper uppercase ring-1 ring-paper/50 transition hover:bg-paper/10 hover:ring-paper"
           >
-            Ver arreglos
+            Cotizar evento
           </a>
         </motion.div>
       </div>

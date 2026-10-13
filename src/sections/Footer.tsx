@@ -3,7 +3,7 @@ import { SOCIALS } from '@/lib/socials'
 import { SITE } from '@/lib/site'
 
 const LINKS = [
-  ['#flores', 'Flores'],
+  ['#arreglos', 'Arreglos'],
   ['#eventos', 'Eventos'],
   ['#cotizar', 'Cotizar'],
   ['#quienes-somos', 'Quiénes somos'],

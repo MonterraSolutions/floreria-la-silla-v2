@@ -1,12 +1,14 @@
 import { useEffect, useId, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, ShoppingBag, Store, Trash2, Truck, X } from 'lucide-react'
+import { ArrowRight, ShoppingCart, Store, Trash2, Truck, X } from 'lucide-react'
 import { WhatsAppIcon } from '@/components/icons'
 import { Price } from '@/components/shop/ProductCard'
 import { Stepper } from '@/components/shop/ProductSheet'
-import { MUNICIPIOS, precio } from '@/lib/catalogo'
+import { TarjetaCampos } from '@/components/shop/TarjetaCampos'
+import { MUNICIPIOS, esFuneraria, foto, precio } from '@/lib/catalogo'
 import { useShop, type Linea } from '@/lib/cart'
 import { SITE, wa } from '@/lib/site'
+import { textoTarjeta, type Tarjeta } from '@/lib/tarjeta'
 import { cn } from '@/lib/utils'
 
 interface Entrega {
@@ -14,11 +16,10 @@ interface Entrega {
   fecha: string
   municipio: string
   recibe: string
-  tarjeta: string
   nombre: string
 }
 
-const EMPTY: Entrega = { modo: 'domicilio', fecha: '', municipio: 'Monterrey', recibe: '', tarjeta: '', nombre: '' }
+const EMPTY: Entrega = { modo: 'domicilio', fecha: '', municipio: 'Monterrey', recibe: '', nombre: '' }
 const KEY = 'lasilla-entrega-v2'
 
 function hoy() {
@@ -32,17 +33,26 @@ function fechaLarga(iso: string) {
   return new Intl.DateTimeFormat('es-MX', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }).format(Date.UTC(y, m - 1, d))
 }
 
-export function mensajePedido(lines: Linea[], subtotal: number, porConfirmar: boolean, e: Entrega) {
+export function mensajePedido(lines: Linea[], tarjetas: Record<string, Tarjeta[]>, listones: Record<string, string[]>, sala: string, subtotal: number, porConfirmar: boolean, e: Entrega) {
   const out = ['Hola, quiero hacer este pedido en Florería La Silla:', '']
   for (const { product: p, qty } of lines) {
     out.push(`• ${qty} × ${p.name} — ${p.price === null ? 'precio por confirmar' : precio(p.price * qty)}`)
+    for (let i = 0; i < qty; i++) {
+      if (esFuneraria(p)) {
+        const l = listones[p.id]?.[i]?.trim()
+        out.push(`   ${qty > 1 ? `Listón ${i + 1}` : 'Listón'}: ${l ? `"${l}"` : 'texto por definir'}`)
+        continue
+      }
+      const t = textoTarjeta(tarjetas[p.id]?.[i])
+      if (t) out.push(`   ${qty > 1 ? `Tarjeta ${i + 1}` : 'Tarjeta'}: ${t}`)
+    }
   }
   out.push('')
   if (subtotal) out.push(`Subtotal: ${precio(subtotal)} + envío${porConfirmar ? ' (más lo que está por confirmar)' : ''}`)
   const cuando = e.fecha ? fechaLarga(e.fecha) : 'fecha por definir'
   out.push(e.modo === 'tienda' ? `Recojo en tienda: ${cuando}` : `Entrega a domicilio en ${e.municipio}: ${cuando}`)
+  if (lines.some((l) => esFuneraria(l.product))) out.push(`Funeraria y sala (condolencias): ${sala.trim() || 'por definir'}`)
   if (e.recibe.trim()) out.push(`Recibe: ${e.recibe.trim()}`)
-  if (e.tarjeta.trim()) out.push(`Tarjeta: "${e.tarjeta.trim()}"`)
   if (e.nombre.trim()) out.push(`Mi nombre: ${e.nombre.trim()}`)
   out.push('', '¿Me confirman disponibilidad y el costo de envío?')
   return out.join('\n')
@@ -53,7 +63,7 @@ const field =
 const label = 'mb-1.5 block text-[0.78rem] font-medium tracking-[0.08em] text-stone uppercase'
 
 export function CartDrawer() {
-  const { lines, count, subtotal, porConfirmar, setQty, remove, clear, cartOpen, setCartOpen, view } = useShop()
+  const { lines, count, subtotal, porConfirmar, setQty, remove, clear, cartOpen, setCartOpen, view, nombre, setNombre, tarjetas, setTarjeta, listones, setListon, sala, setSala } = useShop()
   const [e, setE] = useState<Entrega>(() => {
     try {
       return { ...EMPTY, ...JSON.parse(localStorage.getItem(KEY) ?? '{}') }
@@ -63,6 +73,11 @@ export function CartDrawer() {
   })
   const [sent, setSent] = useState(false)
   const id = useId()
+
+  // Si ya escribió su nombre en el cotizador, aparece aquí; si lo borra o lo cambia, se respeta.
+  useEffect(() => {
+    if (nombre) setE((s) => (s.nombre ? s : { ...s, nombre }))
+  }, [nombre])
 
   useEffect(() => {
     try {
@@ -83,7 +98,8 @@ export function CartDrawer() {
   }, [cartOpen, setCartOpen])
 
   const set = <K extends keyof Entrega>(k: K, v: Entrega[K]) => setE((s) => ({ ...s, [k]: v }))
-  const href = wa(mensajePedido(lines, subtotal, porConfirmar, e))
+  const href = wa(mensajePedido(lines, tarjetas, listones, sala, subtotal, porConfirmar, e))
+  const hayFuneraria = lines.some((l) => esFuneraria(l.product))
 
   return (
     <AnimatePresence>
@@ -123,7 +139,7 @@ export function CartDrawer() {
             {lines.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
                 <span className="grid size-16 place-items-center rounded-full bg-tile">
-                  <ShoppingBag className="size-6 text-rose" strokeWidth={1.25} />
+                  <ShoppingCart className="size-7 text-rose" strokeWidth={1.25} />
                 </span>
                 <p className="mt-5 font-serif text-[1.45rem] leading-tight text-ink">Todavía no hay flores aquí</p>
                 <p className="mt-2 max-w-xs text-[0.95rem] text-stone">Agrega uno o varios arreglos y al final nos mandas el pedido completo por WhatsApp.</p>
@@ -140,23 +156,57 @@ export function CartDrawer() {
                 <div className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-7">
                   <ul className="divide-y divide-ink/10">
                     {lines.map(({ product: p, qty }) => (
-                      <motion.li layout key={p.id} className="flex gap-4 py-4">
-                        <button type="button" onClick={() => view(p.id)} className="w-[4.5rem] shrink-0 cursor-pointer overflow-hidden rounded-[8px] bg-tile ring-1 ring-ink/[0.05]" aria-label={`Ver ${p.name}`}>
-                          <img src={`p/${p.id}-sm.webp`} alt="" className="aspect-[4/5] w-full object-contain" />
-                        </button>
+                      <li key={p.id} className="flex gap-4 py-4">
+                        {esFuneraria(p) ? (
+                          // funeraria no tiene ficha: solo la foto
+                          <span className="w-[4.5rem] shrink-0 self-start overflow-hidden rounded-[8px] bg-tile ring-1 ring-ink/[0.05]">
+                            <img src={foto(p, true)} alt="" className="aspect-[4/5] w-full object-cover" />
+                          </span>
+                        ) : (
+                          <button type="button" onClick={() => view(p.id)} className="w-[4.5rem] shrink-0 cursor-pointer self-start overflow-hidden rounded-[8px] bg-tile ring-1 ring-ink/[0.05]" aria-label={`Ver ${p.name}`}>
+                            <img src={foto(p, true)} alt="" className="aspect-[4/5] w-full object-contain" />
+                          </button>
+                        )}
                         <div className="flex min-w-0 flex-1 flex-col">
                           <div className="flex items-start justify-between gap-3">
                             <p className="font-serif text-[1rem] leading-snug text-ink">{p.name}</p>
                             <Price value={p.price === null ? null : p.price * qty} className="font-serif text-[1rem] leading-snug text-rose" />
                           </div>
-                          <div className="mt-auto flex items-center justify-between pt-2">
+                          <div className="flex items-center justify-between pt-2">
                             <Stepper small value={qty} onChange={(n) => setQty(p.id, n)} />
                             <button type="button" onClick={() => remove(p.id)} className="grid size-9 cursor-pointer place-items-center rounded-full text-stone transition hover:bg-ink/[0.06] hover:text-rose" aria-label={`Quitar ${p.name}`}>
                               <Trash2 className="size-4" strokeWidth={1.5} />
                             </button>
                           </div>
+                          <div className="mt-2.5 flex flex-col gap-4">
+                            {Array.from({ length: qty }, (_, i) =>
+                              esFuneraria(p) ? (
+                                <div key={i}>
+                                  <label htmlFor={`${id}-l-${p.id}-${i}`} className="mb-1 block text-[0.88rem] text-ink">
+                                    {qty > 1 ? `Texto del listón ${i + 1} de ${qty}` : 'Texto del listón'}
+                                  </label>
+                                  <input
+                                    id={`${id}-l-${p.id}-${i}`}
+                                    value={listones[p.id]?.[i] ?? ''}
+                                    maxLength={60}
+                                    onChange={(ev) => setListon(p.id, i, ev.target.value)}
+                                    placeholder="Ej. Con cariño, familia García Treviño"
+                                    className="min-h-11 w-full rounded-sm bg-paper px-3 text-[0.95rem] text-ink ring-1 ring-ink/15 outline-none placeholder:text-stone/60 focus:ring-2 focus:ring-ink/40"
+                                  />
+                                </div>
+                              ) : (
+                              <TarjetaCampos
+                                key={i}
+                                compact
+                                numero={qty > 1 ? `Tarjeta ${i + 1} de ${qty}` : undefined}
+                                value={tarjetas[p.id]?.[i]}
+                                onChange={(t) => setTarjeta(p.id, i, t)}
+                              />
+                              ),
+                            )}
+                          </div>
                         </div>
-                      </motion.li>
+                      </li>
                     ))}
                   </ul>
 
@@ -206,6 +256,14 @@ export function CartDrawer() {
                           </select>
                         </div>
                       )}
+                      {hayFuneraria && (
+                        <div className="col-span-2">
+                          <label htmlFor={`${id}-sala`} className={label}>
+                            Funeraria y sala (condolencias)
+                          </label>
+                          <input id={`${id}-sala`} value={sala} onChange={(ev) => setSala(ev.target.value)} placeholder="Ej. Funerales Hernández, sala 3" className={field} />
+                        </div>
+                      )}
                       <div className="col-span-2">
                         <label htmlFor={`${id}-r`} className={label}>
                           ¿Quién lo recibe?
@@ -213,24 +271,10 @@ export function CartDrawer() {
                         <input id={`${id}-r`} value={e.recibe} onChange={(ev) => set('recibe', ev.target.value)} placeholder="Nombre de quien recibe" autoComplete="off" className={field} />
                       </div>
                       <div className="col-span-2">
-                        <label htmlFor={`${id}-t`} className={label}>
-                          Mensaje de la tarjeta
-                        </label>
-                        <textarea
-                          id={`${id}-t`}
-                          rows={2}
-                          maxLength={160}
-                          value={e.tarjeta}
-                          onChange={(ev) => set('tarjeta', ev.target.value)}
-                          placeholder="Feliz cumpleaños, mamá. Te quiero."
-                          className={cn(field, 'resize-none py-3 leading-relaxed')}
-                        />
-                      </div>
-                      <div className="col-span-2">
                         <label htmlFor={`${id}-n`} className={label}>
                           Tu nombre
                         </label>
-                        <input id={`${id}-n`} value={e.nombre} onChange={(ev) => set('nombre', ev.target.value)} placeholder="Para saber quién pide" autoComplete="name" className={field} />
+                        <input id={`${id}-n`} value={e.nombre} onChange={(ev) => set('nombre', ev.target.value)} onBlur={(ev) => setNombre(ev.target.value)} placeholder="Para saber quién pide" autoComplete="name" className={field} />
                       </div>
                     </div>
 

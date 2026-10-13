@@ -3,7 +3,7 @@ import { FloatingContact } from '@/components/FloatingContact'
 import { Intro } from '@/components/Intro'
 import { Nav } from '@/components/Nav'
 import { CartDrawer } from '@/components/shop/CartDrawer'
-import { CartPill, CartToast } from '@/components/shop/CartUI'
+import { CartToast } from '@/components/shop/CartUI'
 import { ProductSheet } from '@/components/shop/ProductSheet'
 import { ShopProvider } from '@/lib/cart'
 import { QuienesSomos } from '@/pages/QuienesSomos'
@@ -15,8 +15,21 @@ import { Footer } from '@/sections/Footer'
 import { Funeraria } from '@/sections/Funeraria'
 import { Hero } from '@/sections/Hero'
 
-// "Quiénes somos" es una página aparte; todo lo demás vive en la portada.
-const PAGINA = '#quienes-somos'
+// Tres vistas: la portada (arreglos, funeraria y contacto), Eventos (eventos, cotizador y contacto)
+// y Quiénes somos. #contacto existe en las dos primeras, así que no cambia de vista.
+type Vista = 'portada' | 'eventos' | 'nosotros'
+
+function vistaDe(hash: string, actual: Vista): Vista {
+  if (hash === '#quienes-somos') return 'nosotros'
+  if (hash === '#eventos' || hash === '#cotizar') return 'eventos'
+  if (hash === '#contacto') {
+    // con «atrás» se regresa a la vista donde estaba ese #contacto
+    const guardada = (window.history.state as { vista?: Vista } | null)?.vista
+    if (guardada === 'portada' || guardada === 'eventos') return guardada
+    return actual === 'nosotros' ? 'portada' : actual
+  }
+  return 'portada'
+}
 
 function useHash() {
   const [hash, setHash] = useState(() => window.location.hash)
@@ -32,37 +45,42 @@ export default function App() {
   const [ready, setReady] = useState(false)
   const onDone = useCallback(() => setReady(true), [])
   const hash = useHash()
-  const enPagina = hash === PAGINA
+  const [vista, setVista] = useState<Vista>(() => vistaDe(window.location.hash, 'portada'))
+  if (vistaDe(hash, vista) !== vista) setVista(vistaDe(hash, vista))
+
+  useEffect(() => {
+    window.history.replaceState({ ...window.history.state, vista }, '')
+  }, [vista, hash])
 
   // al cambiar de vista, el ancla todavía no existe cuando el navegador intenta bajar a ella
   useLayoutEffect(() => {
-    if (enPagina) {
-      window.scrollTo({ top: 0, behavior: 'instant' })
-      return
-    }
-    const el = hash ? document.querySelector(hash) : null
+    const el = hash && hash !== '#quienes-somos' && hash !== '#eventos' ? document.querySelector(hash) : null
     if (el) el.scrollIntoView({ behavior: 'instant' })
-  }, [enPagina]) // eslint-disable-line react-hooks/exhaustive-deps
+    else window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [vista]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <ShopProvider>
       <Intro onDone={onDone} />
-      <Nav solid={enPagina} />
-      {enPagina ? (
+      <Nav solid={vista !== 'portada'} />
+      {vista === 'nosotros' ? (
         <QuienesSomos />
+      ) : vista === 'eventos' ? (
+        <main className="bg-blush-50 pt-14 md:pt-16">
+          <Eventos />
+          <Cotizar />
+          <Contacto />
+        </main>
       ) : (
         <main>
           <Hero play={ready} />
           <Arreglos />
           <Funeraria />
-          <Eventos />
-          <Cotizar />
           <Contacto />
         </main>
       )}
       <Footer />
       <FloatingContact visible={ready} />
-      <CartPill visible={ready} />
       <CartToast />
       <ProductSheet />
       <CartDrawer />

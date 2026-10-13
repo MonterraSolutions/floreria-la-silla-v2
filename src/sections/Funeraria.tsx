@@ -1,37 +1,26 @@
 import { useId, useState } from 'react'
 import { motion } from 'framer-motion'
-import { WhatsAppIcon } from '@/components/icons'
 import { Reveal } from '@/components/Reveal'
 import { ThumbnailGallery } from '@/components/ui/thumbnail-gallery'
-import { wa } from '@/lib/site'
+import { useShop } from '@/lib/cart'
+import { FUNERARIA, foto } from '@/lib/catalogo'
 
-const PIEZAS = [
-  { img: 'corona-blanca', name: 'Corona blanca', note: 'Rosas blancas con centro de hortensia' },
-  { img: 'corona-rosas-rojas', name: 'Corona de rosas rojas', note: 'Rosa roja sobre follaje de palma' },
-  { img: 'cruz-rosas', name: 'Cruz de rosas blancas', note: 'Rosas, lilis y orquídea, en tripié' },
-  { img: 'tripie-rosas-blancas', name: 'Tripié de rosas blancas', note: 'Rosas y perritos blancos' },
-  { img: 'condolencia-liston', name: 'Arreglo con listón', note: 'Tulipán, lili y nube, con dedicatoria' },
-  { img: 'blanco-con-fruta', name: 'Arreglo blanco con fruta', note: 'Para llevar a casa de la familia' },
-]
+const PIEZAS = FUNERARIA
 
 const field =
-  'min-h-12 w-full rounded-xl bg-ink px-4 text-[1rem] text-paper ring-1 ring-paper/15 outline-none placeholder:text-paper/35 focus:ring-petal'
+  'min-h-12 w-full rounded-xl bg-ink px-4 text-[1rem] text-paper ring-1 ring-paper/15 outline-none placeholder:text-paper/35 focus:ring-paper/60'
 
 export function Funeraria() {
-  const [pieza, setPieza] = useState(PIEZAS[0].name)
-  const [texto, setTexto] = useState('')
-  const [lugar, setLugar] = useState('')
+  const { add, qtyOf, listones, setListon, sala, setSala, setCartOpen } = useShop()
+  const [piezaId, setPiezaId] = useState(PIEZAS[0].id)
+  const pieza = PIEZAS.find((p) => p.id === piezaId)!
   const ids = { texto: useId(), lugar: useId(), pieza: useId() }
-
-  const mensaje = [
-    'Hola, quiero enviar un arreglo de condolencias.',
-    `Arreglo: ${pieza}`,
-    `Texto del listón: ${texto || '(por definir)'}`,
-    `Funeraria / sala: ${lugar || '(por definir)'}`,
-  ].join('\n')
+  // el texto que escribes es el del listón de la siguiente pieza que vas a agregar
+  const enPedido = qtyOf(piezaId)
+  const texto = listones[piezaId]?.[enPedido] ?? ''
 
   return (
-    <section id="funeraria" className="scroll-mt-20 bg-ink text-paper">
+    <section id="funeraria" className="scroll-mt-16 bg-ink text-paper">
       <div className="mx-auto max-w-7xl px-4 py-20 md:px-8 md:py-28">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <Reveal>
@@ -43,9 +32,9 @@ export function Funeraria() {
           {/* galería de piezas: la que se ve es la que va en el listón */}
           <Reveal className="min-w-0">
             <ThumbnailGallery
-              items={PIEZAS.map((p) => ({ src: `img/${p.img}.webp`, thumb: `img/${p.img}-sm.webp`, alt: `${p.name}: ${p.note.toLowerCase()}`, name: p.name }))}
-              index={Math.max(0, PIEZAS.findIndex((p) => p.name === pieza))}
-              onChange={(i) => setPieza(PIEZAS[i].name)}
+              items={PIEZAS.map((p) => ({ src: foto(p), thumb: foto(p, true), alt: `${p.name}: ${p.desc.toLowerCase()}`, name: p.name }))}
+              index={Math.max(0, PIEZAS.findIndex((p) => p.id === piezaId))}
+              onChange={(i) => setPiezaId(PIEZAS[i].id)}
             />
           </Reveal>
 
@@ -53,33 +42,35 @@ export function Funeraria() {
           <Reveal delay={0.1}>
             <div className="rounded-md bg-ink-soft/60 p-5 ring-1 ring-paper/10 sm:p-7">
               <div className="relative flex h-40 items-center justify-center overflow-hidden rounded-md bg-[radial-gradient(ellipse_at_center,#2b2424_0%,#171414_75%)]" aria-hidden="true">
-                <motion.span key={pieza} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="absolute top-4 text-[0.68rem] tracking-[0.3em] text-paper/45 uppercase">
-                  {pieza}
+                <motion.span key={piezaId} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="absolute top-4 text-[0.68rem] tracking-[0.3em] text-paper/45 uppercase">
+                  {pieza.name}
                 </motion.span>
-                <div className="relative mt-4 w-[90%] -rotate-2">
-                  <div
-                    className="bg-gradient-to-b from-[#fbf7f2] via-[#efe7dd] to-[#e2d7ca] px-9 py-4 text-center shadow-[0_18px_40px_-12px_rgba(0,0,0,0.7)]"
-                    style={{ clipPath: 'polygon(0 0, 100% 0, 96% 50%, 100% 100%, 0 100%, 4% 50%)' }}
-                  >
-                    <span className="block font-serif text-[clamp(1.1rem,2.2vw,1.45rem)] leading-snug break-words text-[#5a4a3e] italic">
+                {/* listón de satín nacarado: banda al frente, puntas dobladas por detrás */}
+                <div className="liston mt-4 w-[78%]">
+                  <span className="liston-cola liston-cola-izq" />
+                  <span className="liston-pliegue liston-pliegue-izq" />
+                  <span className="liston-cola liston-cola-der" />
+                  <span className="liston-pliegue liston-pliegue-der" />
+                  <div className="liston-banda px-6 py-4 text-center">
+                    <span className="liston-brillo" />
+                    <span className="liston-texto relative block font-serif text-[clamp(1.1rem,2.2vw,1.45rem)] leading-snug break-words italic">
                       {texto || 'Con cariño, familia García Treviño'}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <h3 className="mt-6 font-display text-[1.9rem] leading-none">
-                Texto del listón
-              </h3>
-              <p className="mt-2 text-[0.9rem] text-paper/60">Escoge la pieza, escribe el texto y envía el pedido por WhatsApp.</p>
+              <p className="mt-6 text-[0.95rem] text-paper/70">Escoge la pieza, escribe el texto del listón y agrégala a tu pedido.</p>
 
               <div className="mt-5 grid gap-4">
                 <label htmlFor={ids.pieza} className="sr-only">
                   Arreglo
                 </label>
-                <select id={ids.pieza} value={pieza} onChange={(e) => setPieza(e.target.value)} className={field}>
+                <select id={ids.pieza} value={piezaId} onChange={(e) => setPiezaId(e.target.value)} className={field}>
                   {PIEZAS.map((p) => (
-                    <option key={p.name}>{p.name}</option>
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
                   ))}
                 </select>
                 <div>
@@ -90,7 +81,7 @@ export function Funeraria() {
                     id={ids.texto}
                     value={texto}
                     maxLength={60}
-                    onChange={(e) => setTexto(e.target.value)}
+                    onChange={(e) => setListon(piezaId, enPedido, e.target.value)}
                     placeholder="Texto del listón"
                     className={field}
                   />
@@ -99,16 +90,19 @@ export function Funeraria() {
                 <label htmlFor={ids.lugar} className="sr-only">
                   Funeraria y sala
                 </label>
-                <input id={ids.lugar} value={lugar} onChange={(e) => setLugar(e.target.value)} placeholder="Funeraria y sala" className={field} />
-                <a
-                  href={wa(mensaje)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-1 inline-flex min-h-12 items-center justify-center gap-2.5 rounded-sm bg-paper px-7 text-[0.95rem] font-normal text-ink transition hover:bg-blush"
+                <input id={ids.lugar} value={sala} onChange={(e) => setSala(e.target.value)} placeholder="Funeraria y sala" className={field} />
+                <button
+                  type="button"
+                  onClick={() => add(piezaId)}
+                  className="mt-1 inline-flex min-h-12 cursor-pointer items-center justify-center gap-2.5 rounded-sm bg-paper px-7 text-[0.95rem] font-normal text-ink transition hover:bg-[#e4dfd8]"
                 >
-                  <WhatsAppIcon className="size-[1.1rem]" />
-                  Enviar pedido por WhatsApp
-                </a>
+                  Agregar al pedido
+                </button>
+                {enPedido > 0 && (
+                  <button type="button" onClick={() => setCartOpen(true)} className="cursor-pointer text-center text-[0.88rem] text-paper/70 underline decoration-paper/25 underline-offset-4 hover:text-paper">
+                    Ya llevas {enPedido} en tu pedido · Ver pedido
+                  </button>
+                )}
               </div>
             </div>
           </Reveal>

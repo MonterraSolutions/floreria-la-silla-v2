@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { CalendarDays, ChevronRight, Clock, CreditCard, ShoppingBag, Truck } from 'lucide-react'
+import { CalendarDays, ChevronRight, Clock, CreditCard, Truck } from 'lucide-react'
 import { Reveal } from '@/components/Reveal'
 import { ProductCard } from '@/components/shop/ProductCard'
 import { Carousel } from '@/components/ui/carousel'
-import { CATEGORIAS, PRODUCTOS, precio, type CategoriaId } from '@/lib/catalogo'
-import { useShop } from '@/lib/cart'
+import { CATEGORIAS, PRODUCTOS, type CategoriaId } from '@/lib/catalogo'
 import { SITE } from '@/lib/site'
 import { cn } from '@/lib/utils'
 
@@ -18,9 +17,11 @@ const INFO = [
 ]
 
 const label = 'text-[0.68rem] font-medium tracking-[0.24em] text-stone uppercase'
-/** La categoría elegida: carrusel, y "ver todos" la abre en cuadrícula. Cambia en su lugar, sin mover la página. */
-function Panel({ cat }: { cat: (typeof CATEGORIAS)[number] }) {
-  const [all, setAll] = useState(false)
+/**
+ * La categoría elegida: carrusel, y "ver más" la abre en cuadrícula. Cambia en su lugar, sin mover la página.
+ * "Ver más" se queda abierto al cambiar de categoría (el estado vive en la sección).
+ */
+function Panel({ cat, all, setAll }: { cat: (typeof CATEGORIAS)[number]; all: boolean; setAll: (fn: (v: boolean) => boolean) => void }) {
   const items = PRODUCTOS.filter((p) => p.cat === cat.id)
 
   return (
@@ -39,7 +40,7 @@ function Panel({ cat }: { cat: (typeof CATEGORIAS)[number] }) {
           className="group inline-flex min-h-11 shrink-0 cursor-pointer items-center gap-1 text-[0.7rem] font-medium tracking-[0.18em] text-stone uppercase transition-colors hover:text-rose"
           aria-expanded={all}
         >
-          {all ? 'Ver menos' : `Ver los ${items.length}`}
+          {all ? 'Ver menos' : 'Ver más'}
           <ChevronRight className={cn('size-4 transition-transform', all ? '-rotate-90' : 'group-hover:translate-x-0.5')} strokeWidth={1.5} />
         </button>
       </div>
@@ -67,10 +68,10 @@ function Panel({ cat }: { cat: (typeof CATEGORIAS)[number] }) {
 }
 
 function Sidebar({ active, onPick }: { active: CategoriaId; onPick: (c: CategoriaId) => void }) {
-  const { count, subtotal, porConfirmar, setCartOpen } = useShop()
   return (
     <aside className="hidden lg:block">
-      <div className="flex flex-col">
+      {/* se queda a la vista al bajar por los arreglos, solo si cabe completo en la pantalla */}
+      <div className="flex flex-col lg:[@media(min-height:740px)]:sticky lg:top-20">
         <p className={label}>Categorías:</p>
         <ul className="mt-4 flex flex-col" role="tablist" aria-label="Categorías" aria-orientation="vertical">
           {CATEGORIAS.map((c) => (
@@ -105,34 +106,14 @@ function Sidebar({ active, onPick }: { active: CategoriaId; onPick: (c: Categori
           </ul>
         </div>
 
-        <div className="pt-7">
-          <p className={label}>Tu pedido:</p>
-          {count ? (
-            <button type="button" onClick={() => setCartOpen(true)} className="group mt-3 flex w-full cursor-pointer items-center justify-between gap-3 text-left">
-              <span>
-                <span className="block font-display text-[1.3rem] leading-tight text-ink">
-                  {count} {count === 1 ? 'arreglo' : 'arreglos'}
-                </span>
-                <span className="text-[0.85rem] text-stone">
-                  {subtotal ? `${precio(subtotal)} + envío` : 'Precio por confirmar'}
-                  {subtotal > 0 && porConfirmar && ' · y por cotizar'}
-                </span>
-              </span>
-              <span className="grid size-11 shrink-0 place-items-center rounded-full bg-ink text-paper transition group-hover:bg-rose">
-                <ShoppingBag className="size-[1.1rem]" strokeWidth={1.5} />
-              </span>
-            </button>
-          ) : (
-            <p className="mt-3 max-w-[15rem] text-[0.88rem] leading-relaxed text-stone">
-              Agrega los arreglos que quieras y al final nos mandas el pedido por WhatsApp.
-            </p>
-          )}
-          <p className="mt-6 text-[0.82rem] text-stone">
+        <div className="pt-5">
+          <p className="text-[0.82rem] text-stone">
             ¿Dudas?{' '}
             <a href={SITE.phoneHref} className="text-ink underline decoration-ink/20 underline-offset-4 hover:decoration-rose">
               {SITE.phone}
             </a>
           </p>
+          <p className="mt-3 text-[0.78rem] leading-relaxed text-stone">* Precios más envío. La flor está sujeta a disponibilidad de color y temporada.</p>
         </div>
       </div>
     </aside>
@@ -141,13 +122,14 @@ function Sidebar({ active, onPick }: { active: CategoriaId; onPick: (c: Categori
 
 export function Arreglos() {
   const [active, setActive] = useState<CategoriaId>(CATEGORIAS[0].id)
+  const [all, setAll] = useState(false)
   const cat = CATEGORIAS.find((c) => c.id === active)!
 
   return (
-    <section id="flores" className="scroll-mt-20 bg-cream py-20 md:py-28">
+    <section id="flores" className="scroll-mt-16 bg-cream py-20 md:py-28">
       <div className="mx-auto max-w-[88rem] px-4 md:px-8">
         <Reveal className="text-center">
-          <h2 id="arreglos" className="scroll-mt-28 font-display text-[clamp(2.6rem,5.6vw,4.6rem)] leading-[1] text-ink">
+          <h2 id="arreglos" className="scroll-mt-24 font-display text-[clamp(2.6rem,5.6vw,4.6rem)] leading-[1] text-ink">
             Arreglos ocasionales
           </h2>
           <p className="mx-auto mt-5 max-w-lg text-[1rem] leading-relaxed text-stone">
@@ -185,9 +167,9 @@ export function Arreglos() {
           <Sidebar active={active} onPick={setActive} />
           <div className="min-w-0 lg:border-l lg:border-ink/10 lg:pl-12" role="tabpanel" aria-label={cat.title}>
             <AnimatePresence mode="wait" initial={false}>
-              <Panel key={cat.id} cat={cat} />
+              <Panel key={cat.id} cat={cat} all={all} setAll={setAll} />
             </AnimatePresence>
-            <p className="border-t border-ink/10 pt-6 text-[0.82rem] text-stone">* Precios más envío. La flor está sujeta a disponibilidad de color y temporada.</p>
+            <p className="border-t border-ink/10 pt-6 text-[0.82rem] text-stone lg:hidden">* Precios más envío. La flor está sujeta a disponibilidad de color y temporada.</p>
           </div>
         </div>
 

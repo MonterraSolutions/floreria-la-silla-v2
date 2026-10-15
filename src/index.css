@@ -1,21 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  /* colorimetría pedida por el cliente (referencia: bloomandboxflowers.com) */
+  /* PROPUESTA B: negro y blanco con rojo vino de acento (la A es la rosa, en la rama main).
+     Se conservan los nombres de los tokens para no tocar los componentes. */
   --color-paper: #ffffff;
-  --color-blush-50: #f9f3f1;
-  --color-blush: #f6dfd9;
-  --color-blush-200: #efc8bf;
-  --color-petal: #f7a8cb;
-  --color-rose: #c2477a;
-  --color-rose-deep: #9c2f5c;
-  --color-ink: #3a3a3e;
-  --color-ink-soft: #4d4d52;
-  --color-stone: #76767b;
-  /* v2: tienda (inspiración boutique: recuadros parejos sobre un fondo cálido) */
-  --color-cream: #fcf8f6;
-  --color-tile: #f5ece8;
-  --color-tile-deep: #efe1db;
+  --color-blush-50: #f6f5f3;
+  --color-blush: #e9e6e2;
+  --color-blush-200: #d8d2cc;
+  --color-petal: #d98a9a;
+  --color-rose: #9b1b34;
+  --color-rose-deep: #741326;
+  --color-ink: #161616;
+  --color-ink-soft: #2c2c2c;
+  --color-stone: #6b6b6b;
+  --color-cream: #fafaf9;
+  --color-tile: #f1efec;
+  --color-tile-deep: #e6e3df;
 
   /* tokens que esperan los componentes shadcn */
   --color-background: var(--color-paper);

@@ -14,6 +14,7 @@ import { Eventos } from '@/sections/Eventos'
 import { Footer } from '@/sections/Footer'
 import { Funeraria } from '@/sections/Funeraria'
 import { Hero } from '@/sections/Hero'
+import { Ocasiones } from '@/sections/Ocasiones'
 
 // Tres vistas: la portada (arreglos, funeraria y contacto), Eventos (eventos, cotizador y contacto)
 // y Quiénes somos. #contacto existe en las dos primeras, así que no cambia de vista.
@@ -74,6 +75,7 @@ export default function App() {
       ) : (
         <main>
           <Hero play={ready} />
+          <Ocasiones />
           <Arreglos />
           <Funeraria />
           <Contacto />

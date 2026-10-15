@@ -18,6 +18,30 @@ export const CATEGORIAS: Categoria[] = [
   { id: 'especiales', name: 'Orquídeas y especiales', title: 'Orquídeas y especiales' },
 ]
 
+// Ocasiones (propuesta B): el cliente pidió secciones de Cumpleaños y Amor. Un arreglo puede estar en las dos;
+// se muestran en el orden de estas listas.
+export type OcasionId = 'cumple' | 'amor'
+
+export const OCASIONES: { id: OcasionId; name: string; title: string }[] = [
+  { id: 'cumple', name: 'Cumpleaños', title: 'Para cumpleaños' },
+  { id: 'amor', name: 'Amor', title: 'Para el amor' },
+]
+
+const POR_OCASION: Record<OcasionId, string[]> = {
+  // flor de color, cajas alegres, tulipanes y jarrones
+  cumple: [
+    'box-girasoles-rosas', 'bloom-box', 'box-gerberas-lisianthus', 'rosas-lisianthus-12', 'tulipanes-20', 'box-rosas-gerberas-chico',
+    'surtido-jarron', 'cilindro-girasoles', 'tulipanes-12', 'caja-rosas-surtida', 'orquidea-phalaenopsis-rosas', 'surtido-especial',
+    'tulipanes-50', 'tulipanes', 'jarron-lirios', 'bowl-hortensias', 'esfera-plata', 'vino-blanco-caja', 'rosas-12', 'rosas-24',
+  ],
+  // rosas rojas, grandes cantidades y vino tinto
+  amor: [
+    'rosas-12', 'rosas-24', 'rosas-50', 'rosas-50-orquidea', 'cilindro-30-rosas', 'box-mixto-100-rosas', 'rosas-100-base-dorada',
+    'rosas-200-base-dorada', 'canasta-250-rosas', 'bouquet-100-rosas', 'box-18-rosas', 'caja-rosas-orquideas', 'rosas-vino-tinto',
+    'tulipanes-12', 'bowl-rosas-orquideas',
+  ],
+}
+
 export interface Producto {
   id: string
   name: string
@@ -83,6 +107,10 @@ export const FUNERARIA: Producto[] = [
 ]
 
 export const byId = (id: string) => PRODUCTOS.find((p) => p.id === id) ?? FUNERARIA.find((p) => p.id === id)
+
+/** Arreglos de una ocasión (en el orden de su lista) o de un tipo (en el del catálogo). */
+export const deGrupo = (id: OcasionId | CategoriaId) =>
+  id === 'cumple' || id === 'amor' ? POR_OCASION[id].map((x) => PRODUCTOS.find((p) => p.id === x)!) : PRODUCTOS.filter((p) => p.cat === id)
 
 export const esFuneraria = (p: Producto) => p.cat === 'funeraria'
 

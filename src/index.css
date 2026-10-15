@@ -51,7 +51,8 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-weight: 300;
+  /* un poco más grueso que el 300 original para que se lea mejor, sin perder lo delgado */
+  font-weight: 370;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;

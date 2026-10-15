@@ -20,12 +20,6 @@ type GrupoId = OcasionId | CategoriaId
 type Grupo = { id: GrupoId; name: string; title: string }
 const GRUPOS: Grupo[] = [...OCASIONES, ...CATEGORIAS]
 
-// las otras dos ocasiones que pidió el cliente tienen su propia sección
-const OTRAS = [
-  { href: '#funeraria', name: 'Condolencias' },
-  { href: '#eventos', name: 'Eventos florales' },
-]
-
 /** #cumpleanos y #amor (desde las fotos de ocasiones) abren esa pestaña. */
 const POR_HASH: Record<string, OcasionId> = { '#cumpleanos': 'cumple', '#amor': 'amor' }
 
@@ -102,26 +96,10 @@ function Sidebar({ active, onPick }: { active: GrupoId; onPick: (c: GrupoId) => 
   return (
     <aside className="hidden lg:block">
       {/* se queda a la vista al bajar por los arreglos, solo si cabe completo en la pantalla */}
-      <div className="flex flex-col lg:[@media(min-height:860px)]:sticky lg:top-20">
-        <p className={label}>Por ocasión:</p>
-        <ul className="mt-4 flex flex-col" role="tablist" aria-label="Ocasiones" aria-orientation="vertical">
-          {OCASIONES.map((g) => (
-            <SideTab key={g.id} g={g} active={active} onPick={onPick} />
-          ))}
-          {OTRAS.map((o) => (
-            <li key={o.href}>
-              <a href={o.href} className="group flex w-full items-center gap-3 py-1.5 font-display text-[1.22rem] leading-snug text-ink/75 transition-colors hover:text-ink">
-                <span className="h-px w-0 shrink-0 bg-rose transition-all duration-500 group-hover:w-3" />
-                {o.name}
-                <ChevronRight className="ml-auto size-4 text-stone/70" strokeWidth={1.5} />
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <p className={cn(label, 'mt-8')}>Por tipo:</p>
-        <ul className="mt-4 flex flex-col" role="tablist" aria-label="Tipos de arreglo" aria-orientation="vertical">
-          {CATEGORIAS.map((g) => (
+      <div className="flex flex-col lg:[@media(min-height:740px)]:sticky lg:top-20">
+        <p className={label}>Categorías:</p>
+        <ul className="mt-4 flex flex-col" role="tablist" aria-label="Categorías" aria-orientation="vertical">
+          {GRUPOS.map((g) => (
             <SideTab key={g.id} g={g} active={active} onPick={onPick} />
           ))}
         </ul>
@@ -187,8 +165,8 @@ export function Arreglos() {
         {/* categorías en celular y tablet: texto con línea fina bajo la activa */}
         <div className="-mx-4 mt-8 overflow-x-auto px-4 [mask-image:linear-gradient(to_right,transparent,#000_1rem,#000_calc(100%-2.5rem),transparent)] [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
           <ul className="mx-auto flex w-max items-center border-b border-ink/10" role="tablist" aria-label="Categorías">
-            {GRUPOS.map((c, i) => (
-              <li key={c.id} className={cn(i === OCASIONES.length && 'ml-2 border-l border-ink/10 pl-2')}>
+            {GRUPOS.map((c) => (
+              <li key={c.id}>
                 <button
                   type="button"
                   role="tab"

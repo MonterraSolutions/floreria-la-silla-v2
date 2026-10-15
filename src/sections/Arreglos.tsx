@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CalendarDays, ChevronRight, Clock, CreditCard, Truck } from 'lucide-react'
 import { Reveal } from '@/components/Reveal'
 import { ProductCard } from '@/components/shop/ProductCard'
 import { Carousel } from '@/components/ui/carousel'
-import { CATEGORIAS, OCASIONES, deGrupo, type CategoriaId, type OcasionId } from '@/lib/catalogo'
+import { CATEGORIAS, PRODUCTOS, type CategoriaId } from '@/lib/catalogo'
 import { SITE } from '@/lib/site'
 import { cn } from '@/lib/utils'
 
@@ -16,20 +16,13 @@ const INFO = [
   { icon: CreditCard, t: 'Pagos', d: 'Transferencia, efectivo o tarjeta' },
 ]
 
-type GrupoId = OcasionId | CategoriaId
-type Grupo = { id: GrupoId; name: string; title: string }
-const GRUPOS: Grupo[] = [...OCASIONES, ...CATEGORIAS]
-
-/** #cumpleanos y #amor (desde las fotos de ocasiones) abren esa pestaña. */
-const POR_HASH: Record<string, OcasionId> = { '#cumpleanos': 'cumple', '#amor': 'amor' }
-
 const label = 'text-[0.68rem] font-medium tracking-[0.24em] text-stone uppercase'
 /**
  * La categoría elegida: carrusel, y "ver más" la abre en cuadrícula. Cambia en su lugar, sin mover la página.
  * "Ver más" se queda abierto al cambiar de categoría (el estado vive en la sección).
  */
-function Panel({ cat, all, setAll }: { cat: Grupo; all: boolean; setAll: (fn: (v: boolean) => boolean) => void }) {
-  const items = deGrupo(cat.id)
+function Panel({ cat, all, setAll }: { cat: (typeof CATEGORIAS)[number]; all: boolean; setAll: (fn: (v: boolean) => boolean) => void }) {
+  const items = PRODUCTOS.filter((p) => p.cat === cat.id)
 
   return (
     <motion.div
@@ -74,33 +67,27 @@ function Panel({ cat, all, setAll }: { cat: Grupo; all: boolean; setAll: (fn: (v
   )
 }
 
-function SideTab({ g, active, onPick }: { g: Grupo; active: GrupoId; onPick: (c: GrupoId) => void }) {
-  return (
-    <li>
-      <button
-        type="button"
-        role="tab"
-        aria-selected={active === g.id}
-        onClick={() => onPick(g.id)}
-        className={cn('group flex w-full cursor-pointer items-center gap-3 py-1.5 text-left font-display text-[1.22rem] leading-snug transition-colors', active === g.id ? 'text-rose' : 'text-ink/75 hover:text-ink')}
-      >
-        <span className={cn('h-px shrink-0 bg-rose transition-all duration-500', active === g.id ? 'w-5' : 'w-0 group-hover:w-3')} />
-        {g.name}
-        <span className="ml-auto font-sans text-[0.75rem] text-stone/70 tabular-nums">{deGrupo(g.id).length}</span>
-      </button>
-    </li>
-  )
-}
-
-function Sidebar({ active, onPick }: { active: GrupoId; onPick: (c: GrupoId) => void }) {
+function Sidebar({ active, onPick }: { active: CategoriaId; onPick: (c: CategoriaId) => void }) {
   return (
     <aside className="hidden lg:block">
       {/* se queda a la vista al bajar por los arreglos, solo si cabe completo en la pantalla */}
       <div className="flex flex-col lg:[@media(min-height:740px)]:sticky lg:top-20">
         <p className={label}>Categorías:</p>
         <ul className="mt-4 flex flex-col" role="tablist" aria-label="Categorías" aria-orientation="vertical">
-          {GRUPOS.map((g) => (
-            <SideTab key={g.id} g={g} active={active} onPick={onPick} />
+          {CATEGORIAS.map((c) => (
+            <li key={c.id}>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={active === c.id}
+                onClick={() => onPick(c.id)}
+                className={cn('group flex w-full cursor-pointer items-center gap-3 py-1.5 text-left font-display text-[1.22rem] leading-snug transition-colors', active === c.id ? 'text-rose' : 'text-ink/75 hover:text-ink')}
+              >
+                <span className={cn('h-px shrink-0 bg-rose transition-all duration-500', active === c.id ? 'w-5' : 'w-0 group-hover:w-3')} />
+                {c.name}
+                <span className="ml-auto font-sans text-[0.75rem] text-stone/70 tabular-nums">{PRODUCTOS.filter((p) => p.cat === c.id).length}</span>
+              </button>
+            </li>
           ))}
         </ul>
 
@@ -134,21 +121,9 @@ function Sidebar({ active, onPick }: { active: GrupoId; onPick: (c: GrupoId) => 
 }
 
 export function Arreglos() {
-  const [active, setActive] = useState<GrupoId>(GRUPOS[0].id)
+  const [active, setActive] = useState<CategoriaId>(CATEGORIAS[0].id)
   const [all, setAll] = useState(false)
-  const cat = GRUPOS.find((c) => c.id === active)!
-
-  useEffect(() => {
-    const abrir = () => {
-      const id = POR_HASH[window.location.hash]
-      if (!id) return
-      setActive(id)
-      document.getElementById('arreglos')?.scrollIntoView({ behavior: 'smooth' })
-    }
-    abrir()
-    window.addEventListener('hashchange', abrir)
-    return () => window.removeEventListener('hashchange', abrir)
-  }, [])
+  const cat = CATEGORIAS.find((c) => c.id === active)!
 
   return (
     <section id="flores" className="scroll-mt-16 bg-cream py-20 md:py-28">
@@ -165,7 +140,7 @@ export function Arreglos() {
         {/* categorías en celular y tablet: texto con línea fina bajo la activa */}
         <div className="-mx-4 mt-8 overflow-x-auto px-4 [mask-image:linear-gradient(to_right,transparent,#000_1rem,#000_calc(100%-2.5rem),transparent)] [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
           <ul className="mx-auto flex w-max items-center border-b border-ink/10" role="tablist" aria-label="Categorías">
-            {GRUPOS.map((c) => (
+            {CATEGORIAS.map((c) => (
               <li key={c.id}>
                 <button
                   type="button"

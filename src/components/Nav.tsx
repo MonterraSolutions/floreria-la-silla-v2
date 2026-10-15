@@ -14,10 +14,8 @@ const LINKS: Link[] = [
     href: '#arreglos',
     label: 'Arreglos',
     children: [
-      { href: '#cumpleanos', label: 'Cumpleaños' },
-      { href: '#amor', label: 'Amor' },
-      { href: '#arreglos', label: 'Todos los arreglos' },
-      { href: '#funeraria', label: 'Condolencias' },
+      { href: '#arreglos', label: 'Arreglos ocasionales' },
+      { href: '#funeraria', label: 'Arreglos de condolencias' },
     ],
   },
   { href: '#eventos', label: 'Eventos' },

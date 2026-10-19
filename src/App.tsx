@@ -2,7 +2,6 @@ import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { FloatingContact } from '@/components/FloatingContact'
 import { Intro } from '@/components/Intro'
 import { Nav } from '@/components/Nav'
-import { Pantallas } from '@/components/Pantallas'
 import { CartDrawer } from '@/components/shop/CartDrawer'
 import { CartToast } from '@/components/shop/CartUI'
 import { ProductSheet } from '@/components/shop/ProductSheet'
@@ -81,7 +80,6 @@ export default function App() {
         </main>
       )}
       <Footer />
-      <Pantallas key={vista} />
       <FloatingContact visible={ready} />
       <CartToast />
       <ProductSheet />

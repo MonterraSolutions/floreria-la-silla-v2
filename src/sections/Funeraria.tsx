@@ -20,8 +20,8 @@ export function Funeraria() {
   const texto = listones[piezaId]?.[enPedido] ?? ''
 
   return (
-    <section id="funeraria" data-nombre="Condolencias" className="pantalla scroll-mt-16 bg-night text-snow">
-      <div className="pantalla-interior mx-auto max-w-7xl px-4 py-20 md:px-8 md:py-28">
+    <section id="funeraria" className="scroll-mt-16 bg-night text-snow">
+      <div className="mx-auto max-w-7xl px-4 py-20 md:px-8 md:py-28">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <Reveal>
             <h2 className="font-display text-[clamp(2.4rem,5vw,4rem)] leading-[1.02]">Coronas y arreglos de condolencias</h2>

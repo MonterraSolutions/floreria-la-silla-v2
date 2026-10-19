@@ -59,7 +59,7 @@ export function Cotizar() {
   const listo = f.evento && f.fecha && f.nombre.trim().length > 1
 
   return (
-    <section id="cotizar" data-nombre="Cotizar" className="pantalla scroll-mt-16 bg-blush-50 py-20 md:py-28">
+    <section id="cotizar" className="scroll-mt-16 bg-blush-50 py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <Reveal className="max-w-2xl">
           <h2 className="font-display text-[clamp(2.2rem,4.6vw,3.6rem)] leading-[1] text-ink">Cotiza las flores de tu evento</h2>

@@ -126,7 +126,7 @@ export function Arreglos() {
   const cat = CATEGORIAS.find((c) => c.id === active)!
 
   return (
-    <section id="flores" data-nombre="Arreglos" className="pantalla scroll-mt-16 bg-cream py-20 md:py-28">
+    <section id="flores" className="scroll-mt-16 bg-cream py-20 md:py-28">
       <div className="mx-auto max-w-[88rem] px-4 md:px-8">
         <Reveal className="text-center">
           <h2 id="arreglos" className="scroll-mt-24 font-display text-[clamp(2.6rem,5.6vw,4.6rem)] leading-[1] text-ink">
@@ -160,7 +160,7 @@ export function Arreglos() {
           </ul>
         </div>
 
-        <div className="mt-10 grid gap-10 lg:mt-10 lg:grid-cols-[14.5rem_1fr] lg:gap-12 xl:grid-cols-[16rem_1fr]">
+        <div className="mt-10 grid gap-10 lg:mt-16 lg:grid-cols-[14.5rem_1fr] lg:gap-12 xl:grid-cols-[16rem_1fr]">
           <Sidebar active={active} onPick={setActive} />
           <div className="min-w-0 lg:border-l lg:border-ink/10 lg:pl-12" role="tabpanel" aria-label={cat.title}>
             <AnimatePresence mode="wait" initial={false}>

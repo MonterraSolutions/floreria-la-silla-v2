@@ -13,7 +13,7 @@ function rise(delay: number, play: boolean) {
 
 export function Hero({ play }: { play: boolean }) {
   return (
-    <section id="inicio" data-nombre="Inicio" className="pantalla-foto relative isolate flex min-h-svh items-end overflow-hidden bg-night text-snow">
+    <section id="inicio" className="relative isolate flex min-h-svh items-end overflow-hidden bg-night text-snow">
       <motion.img
         src="img/boda-ramo-pareja.webp"
         alt="Ramo de novia con rosas, lavanda y suculenta, hecho por Florería La Silla"

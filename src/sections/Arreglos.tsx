@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { CalendarDays, Clock, CreditCard, Truck } from 'lucide-react'
 import { Reveal } from '@/components/Reveal'
 import { ProductCard } from '@/components/shop/ProductCard'
+import { CategoryMenu } from '@/components/ui/category-menu'
 import { CATEGORIAS, FUNERARIA, deCategoria, type CategoriaId } from '@/lib/catalogo'
 import { SITE } from '@/lib/site'
 import { cn } from '@/lib/utils'
@@ -112,36 +113,14 @@ export function Arreglos() {
           </h2>
         </Reveal>
 
-        {/* categorías en celular y tablet: texto con línea fina bajo la activa */}
-        <div className="-mx-4 mt-8 overflow-x-auto px-4 [mask-image:linear-gradient(to_right,transparent,#000_1rem,#000_calc(100%-2.5rem),transparent)] [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
-          <ul className="mx-auto flex w-max items-center border-b border-ink/10" role="tablist" aria-label="Categorías">
-            {CATEGORIAS.map((c) => (
-              <li key={c.id}>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={active === c.id}
-                  onClick={(e) => {
-                    setActive(c.id)
-                    e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
-                  }}
-                  className={cn(
-                    'relative inline-flex min-h-11 cursor-pointer items-center px-3.5 text-[0.7rem] font-medium tracking-[0.18em] uppercase transition-colors',
-                    active === c.id ? 'text-rose' : 'text-stone',
-                  )}
-                >
-                  {c.name}
-                  {active === c.id && <motion.span layoutId="cat-line" className="absolute inset-x-3.5 -bottom-px h-[2px] bg-rose" />}
-                </button>
-              </li>
-            ))}
-            <li>
-              <a href="#funeraria" className="inline-flex min-h-11 items-center px-3.5 text-[0.7rem] font-medium tracking-[0.18em] text-stone uppercase transition-colors hover:text-ink">
-                Condolencias
-              </a>
-            </li>
-          </ul>
-        </div>
+        {/* categorías en celular y tablet: menú desplegable */}
+        <CategoryMenu
+          className="mt-8 lg:hidden"
+          opciones={CATEGORIAS.map((c) => ({ id: c.id, name: c.name, count: deCategoria(c.id).length }))}
+          activa={active}
+          onPick={setActive}
+          ligas={[{ href: '#funeraria', name: 'Condolencias', count: FUNERARIA.length }]}
+        />
 
         <div className="mt-10 grid gap-10 lg:mt-16 lg:grid-cols-[14.5rem_1fr] lg:gap-12 xl:grid-cols-[16rem_1fr]">
           <Sidebar active={active} onPick={setActive} />

@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { CalendarDays, Clock, CreditCard, Truck } from 'lucide-react'
 import { Reveal } from '@/components/Reveal'
 import { ProductCard } from '@/components/shop/ProductCard'
-import { CATEGORIAS, deCategoria, type CategoriaId } from '@/lib/catalogo'
+import { CATEGORIAS, FUNERARIA, deCategoria, type CategoriaId } from '@/lib/catalogo'
 import { SITE } from '@/lib/site'
 import { cn } from '@/lib/utils'
 
@@ -60,6 +60,14 @@ function Sidebar({ active, onPick }: { active: CategoriaId; onPick: (c: Categori
               </button>
             </li>
           ))}
+          {/* condolencias tiene su propia sección: esta lleva allá */}
+          <li>
+            <a href="#funeraria" className="group flex w-full items-center gap-3 py-1.5 font-display text-[1.22rem] leading-snug text-ink/75 transition-colors hover:text-ink">
+              <span className="h-px w-0 shrink-0 bg-rose transition-all duration-500 group-hover:w-3" />
+              Condolencias
+              <span className="ml-auto font-sans text-[0.75rem] text-stone/70 tabular-nums">{FUNERARIA.length}</span>
+            </a>
+          </li>
         </ul>
 
         <div className="mt-8 rounded-md bg-tile/70 px-5 py-6">
@@ -127,6 +135,11 @@ export function Arreglos() {
                 </button>
               </li>
             ))}
+            <li>
+              <a href="#funeraria" className="inline-flex min-h-11 items-center px-3.5 text-[0.7rem] font-medium tracking-[0.18em] text-stone uppercase transition-colors hover:text-ink">
+                Condolencias
+              </a>
+            </li>
           </ul>
         </div>
 

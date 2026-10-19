@@ -64,7 +64,7 @@ export function ProductSheet() {
             type="button"
             aria-label="Cerrar"
             onClick={() => view(null)}
-            className="absolute inset-0 cursor-default bg-ink/45"
+            className="absolute inset-0 cursor-default bg-night/70"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

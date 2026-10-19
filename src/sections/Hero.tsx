@@ -13,7 +13,7 @@ function rise(delay: number, play: boolean) {
 
 export function Hero({ play }: { play: boolean }) {
   return (
-    <section id="inicio" className="relative isolate flex min-h-svh items-end overflow-hidden bg-ink text-paper">
+    <section id="inicio" className="relative isolate flex min-h-svh items-end overflow-hidden bg-night text-snow">
       <motion.img
         src="img/boda-ramo-pareja.webp"
         alt="Ramo de novia con rosas, lavanda y suculenta, hecho por Florería La Silla"
@@ -35,22 +35,22 @@ export function Hero({ play }: { play: boolean }) {
             <img src="brand/logo-blanco.png" alt="Florería La Silla" width={1600} height={1128} className="w-[min(72vw,17rem)] md:w-[22rem] lg:w-[25rem]" />
           </motion.h1>
 
-          <motion.div {...rise(0.35, play)} className="max-w-xs md:border-l md:border-paper/35 md:pl-10">
+          <motion.div {...rise(0.35, play)} className="max-w-xs md:border-l md:border-snow/35 md:pl-10">
             <p className="font-display text-[1.7rem] leading-tight md:text-[2rem]">Desde {SITE.since}</p>
-            <p className="mt-3 text-[1.05rem] leading-relaxed text-paper/85 md:text-lg">Arreglos florales para toda ocasión en Monterrey.</p>
+            <p className="mt-3 text-[1.05rem] leading-relaxed text-snow/85 md:text-lg">Arreglos florales para toda ocasión en Monterrey.</p>
           </motion.div>
         </div>
 
         <motion.div {...rise(0.5, play)} className="mt-9 flex flex-wrap items-center gap-3">
           <a
             href="#arreglos"
-            className="inline-flex min-h-12 items-center rounded-sm bg-paper px-7 text-[0.8rem] font-normal tracking-[0.16em] text-ink uppercase transition hover:bg-blush"
+            className="inline-flex min-h-12 items-center rounded-sm bg-snow px-7 text-[0.8rem] font-normal tracking-[0.16em] text-night uppercase transition hover:bg-snow/85"
           >
             Ver arreglos
           </a>
           <a
             href="#cotizar"
-            className="inline-flex min-h-12 items-center rounded-sm px-7 text-[0.8rem] font-normal tracking-[0.16em] text-paper uppercase ring-1 ring-paper/50 transition hover:bg-paper/10 hover:ring-paper"
+            className="inline-flex min-h-12 items-center rounded-sm px-7 text-[0.8rem] font-normal tracking-[0.16em] text-snow uppercase ring-1 ring-snow/50 transition hover:bg-snow/10 hover:ring-snow"
           >
             Cotizar evento
           </a>

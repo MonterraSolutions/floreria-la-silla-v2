@@ -45,12 +45,12 @@ export function Nav({ solid = false }: { solid?: boolean }) {
     <header
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,padding] duration-500',
-        scrolled ? 'bg-paper/95 py-2.5 text-ink shadow-[0_1px_0_rgba(23,20,20,0.06)]' : 'py-4 text-paper md:py-5',
+        scrolled ? 'bg-paper/95 py-2.5 text-ink shadow-[0_1px_0_rgba(255,255,255,0.07)]' : 'py-4 text-snow md:py-5',
       )}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 md:px-8" aria-label="Principal">
         <a href="#inicio" className="flex items-center gap-2.5" aria-label="Florería La Silla, inicio">
-          <img src={scrolled ? 'brand/rosa-negro.png' : 'brand/rosa-blanco.png'} alt="" width={600} height={593} className="size-9 md:size-10" />
+          <img src="brand/rosa-blanco.png" alt="" width={600} height={593} className="size-9 md:size-10" />
           <span className="flex flex-col leading-none">
             <span className="font-display text-[0.62rem] tracking-[0.34em] opacity-70">FLORERÍA</span>
             <span className="font-display text-xl tracking-[0.12em] md:text-[1.4rem]">LA SILLA</span>
@@ -82,11 +82,11 @@ export function Nav({ solid = false }: { solid?: boolean }) {
         </ul>
 
         <div className="flex items-center gap-2.5 sm:gap-3">
-          <CartButton className={scrolled ? 'ring-ink/15' : 'ring-paper/40 hover:bg-paper hover:text-ink'} />
+          <CartButton className={scrolled ? 'ring-ink/15' : 'ring-snow/40 hover:bg-snow hover:text-night'} />
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className={cn('grid size-11 cursor-pointer place-items-center rounded-full ring-1 lg:hidden', scrolled ? 'ring-ink/15' : 'ring-paper/40')}
+            className={cn('grid size-11 cursor-pointer place-items-center rounded-full ring-1 lg:hidden', scrolled ? 'ring-ink/15' : 'ring-snow/40')}
             aria-label="Abrir menú"
             aria-expanded={open}
           >
@@ -108,7 +108,7 @@ export function Nav({ solid = false }: { solid?: boolean }) {
             aria-label="Menú"
           >
             <div className="flex items-center justify-between">
-              <img src="brand/rosa-negro.png" alt="" className="size-10" />
+              <img src="brand/rosa-blanco.png" alt="" className="size-10" />
               <button type="button" onClick={() => setOpen(false)} className="grid size-11 cursor-pointer place-items-center rounded-full ring-1 ring-ink/15" aria-label="Cerrar menú">
                 <X className="size-5" />
               </button>

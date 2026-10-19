@@ -1,21 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  /* PROPUESTA B: negro y blanco con rojo vino de acento (la A es la rosa, en la rama main).
-     Se conservan los nombres de los tokens para no tocar los componentes. */
-  --color-paper: #ffffff;
-  --color-blush-50: #f6f5f3;
-  --color-blush: #e9e6e2;
-  --color-blush-200: #d8d2cc;
-  --color-petal: #d98a9a;
-  --color-rose: #9b1b34;
-  --color-rose-deep: #741326;
-  --color-ink: #161616;
-  --color-ink-soft: #2c2c2c;
-  --color-stone: #6b6b6b;
-  --color-cream: #fafaf9;
-  --color-tile: #f1efec;
-  --color-tile-deep: #e6e3df;
+  /* PROPUESTA B: oscura. Fondo casi negro, letra marfil y rojo rosa de acento (la A, clara y rosa, es la rama main).
+     Se conservan los nombres de los tokens: paper = fondo, ink = texto, así que aquí van al revés. */
+  --color-paper: #141210;
+  --color-blush-50: #1b1816;
+  --color-blush: #2a2522;
+  --color-blush-200: #3a332f;
+  --color-petal: #f2a7b6;
+  --color-rose: #e0566f;
+  --color-rose-deep: #ec7a8e;
+  --color-ink: #f3ede7;
+  --color-ink-soft: #d9d1c9;
+  --color-stone: #a9a19a;
+  --color-cream: #1a1715;
+  --color-tile: #221e1b;
+  --color-tile-deep: #2c2723;
+  /* fijos: lo que va sobre foto (portada) y las franjas más oscuras (condolencias, pie) */
+  --color-snow: #f6f1ec;
+  --color-night: #0b0a09;
+  --color-night-soft: #1d1a18;
 
   /* tokens que esperan los componentes shadcn */
   --color-background: var(--color-paper);
@@ -38,7 +42,7 @@
 }
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 html {
@@ -185,8 +189,8 @@ html.is-modal {
   display: grid;
   place-items: center;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 45%, #fff6f5 0%, transparent 70%),
-    var(--color-blush);
+    radial-gradient(ellipse 80% 60% at 50% 45%, #2a2321 0%, transparent 70%),
+    var(--color-night);
   transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1), visibility 0s linear 0.9s;
   cursor: pointer;
 }
@@ -196,6 +200,8 @@ html.is-modal {
 }
 .intro-logo {
   position: relative;
+  /* las capas del logo son negras: aquí se invierten a blanco (el brillo va oscuro para salir claro) */
+  filter: invert(1);
   width: clamp(220px, 32vw, 340px);
   aspect-ratio: 1600 / 1128;
 }
@@ -231,7 +237,7 @@ html.is-modal {
   pointer-events: none;
   -webkit-mask: url("/brand/logo-negro.png") center / contain no-repeat;
   mask: url("/brand/logo-negro.png") center / contain no-repeat;
-  background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.95) 50%, transparent 60%);
+  background: linear-gradient(115deg, transparent 40%, rgba(0, 0, 0, 0.85) 50%, transparent 60%);
   background-size: 240% 100%;
   background-position: 160% 0;
   animation: introShine 1.1s ease 1.85s forwards;

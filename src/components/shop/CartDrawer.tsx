@@ -109,7 +109,7 @@ export function CartDrawer() {
             type="button"
             aria-label="Cerrar pedido"
             onClick={() => setCartOpen(false)}
-            className="absolute inset-0 cursor-default bg-ink/45"
+            className="absolute inset-0 cursor-default bg-night/70"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

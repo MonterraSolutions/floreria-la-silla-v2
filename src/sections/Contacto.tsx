@@ -22,7 +22,7 @@ export function Contacto() {
               src={`https://www.google.com/maps?q=${encodeURIComponent(SITE.mapsQuery)}&output=embed`}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="h-80 w-full grayscale-[35%] md:h-[30rem]"
+              className="h-80 w-full [filter:invert(0.9)_hue-rotate(180deg)_grayscale(35%)] md:h-[30rem]"
             />
           </div>
         </Reveal>

@@ -1,5 +1,4 @@
 import { useId, useState } from 'react'
-import { motion } from 'framer-motion'
 import { Reveal } from '@/components/Reveal'
 import { ThumbnailGallery } from '@/components/ui/thumbnail-gallery'
 import { useShop } from '@/lib/cart'
@@ -13,7 +12,6 @@ const field =
 export function Funeraria() {
   const { add, qtyOf, listones, setListon, sala, setSala, setCartOpen } = useShop()
   const [piezaId, setPiezaId] = useState(PIEZAS[0].id)
-  const pieza = PIEZAS.find((p) => p.id === piezaId)!
   const ids = { texto: useId(), lugar: useId(), pieza: useId() }
   // el texto que escribes es el del listón de la siguiente pieza que vas a agregar
   const enPedido = qtyOf(piezaId)
@@ -42,11 +40,8 @@ export function Funeraria() {
           <Reveal delay={0.1}>
             <div className="rounded-md bg-ink-soft/60 p-5 ring-1 ring-paper/10 sm:p-7">
               <div className="relative flex h-40 items-center justify-center overflow-hidden rounded-md bg-[radial-gradient(ellipse_at_center,#2b2424_0%,#171414_75%)]" aria-hidden="true">
-                <motion.span key={piezaId} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="absolute top-4 text-[0.68rem] tracking-[0.3em] text-paper/45 uppercase">
-                  {pieza.name}
-                </motion.span>
                 {/* listón de satín nacarado: banda al frente, puntas dobladas por detrás */}
-                <div className="liston mt-4 w-[78%]">
+                <div className="liston w-[78%]">
                   <span className="liston-cola liston-cola-izq" />
                   <span className="liston-pliegue liston-pliegue-izq" />
                   <span className="liston-cola liston-cola-der" />

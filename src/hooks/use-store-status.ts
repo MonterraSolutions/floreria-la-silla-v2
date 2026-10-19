@@ -11,6 +11,9 @@ function fmt(h: number) {
   return `${h12}${mm ? ':' + String(mm).padStart(2, '0') : ''} ${suffix}`
 }
 
+/** "a las 8:30 am", pero "a la 1 pm" */
+const alas = (h: number) => `${Math.floor(h) % 12 === 1 ? 'la' : 'las'} ${fmt(h)}`
+
 function nowInMonterrey() {
   const parts = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/Monterrey',
@@ -39,7 +42,7 @@ function compute(): StoreStatus {
 
   let label: string
   if (open) {
-    label = `Abierto · cierra ${fmt(today![1])}`
+    label = `Abierto hoy hasta ${alas(today![1])}`
   } else {
     let next = day
     let guard = 0
@@ -49,8 +52,8 @@ function compute(): StoreStatus {
     } while (!HOURS[next] && guard < 7)
     const opensToday = today && hour < today[0]
     label = opensToday
-      ? `Cerrado · abre hoy ${fmt(today[0])}`
-      : `Cerrado · abre ${next === (day + 1) % 7 ? 'mañana' : 'el ' + DAYS[next]} ${fmt(HOURS[next]![0])}`
+      ? `Hoy abrimos a ${alas(today[0])}`
+      : `Abrimos ${next === (day + 1) % 7 ? 'mañana' : 'el ' + DAYS[next]} a ${alas(HOURS[next]![0])}`
   }
 
   let delivery: string

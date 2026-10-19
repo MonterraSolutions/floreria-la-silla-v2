@@ -4,7 +4,7 @@ import { CalendarDays, Clock, CreditCard, Truck } from 'lucide-react'
 import { Reveal } from '@/components/Reveal'
 import { ProductCard } from '@/components/shop/ProductCard'
 import { CategoryMenu } from '@/components/ui/category-menu'
-import { CATEGORIAS, FUNERARIA, deCategoria, type CategoriaId } from '@/lib/catalogo'
+import { CATEGORIAS, deCategoria, type CategoriaId } from '@/lib/catalogo'
 import { SITE } from '@/lib/site'
 import { cn } from '@/lib/utils'
 
@@ -57,7 +57,6 @@ function Sidebar({ active, onPick }: { active: CategoriaId; onPick: (c: Categori
               >
                 <span className={cn('h-px shrink-0 bg-rose transition-all duration-500', active === c.id ? 'w-5' : 'w-0 group-hover:w-3')} />
                 {c.name}
-                <span className="ml-auto font-sans text-[0.75rem] text-stone/70 tabular-nums">{deCategoria(c.id).length}</span>
               </button>
             </li>
           ))}
@@ -66,7 +65,6 @@ function Sidebar({ active, onPick }: { active: CategoriaId; onPick: (c: Categori
             <a href="#funeraria" className="group flex w-full items-center gap-3 py-1.5 font-display text-[1.22rem] leading-snug text-ink/75 transition-colors hover:text-ink">
               <span className="h-px w-0 shrink-0 bg-rose transition-all duration-500 group-hover:w-3" />
               Condolencias
-              <span className="ml-auto font-sans text-[0.75rem] text-stone/70 tabular-nums">{FUNERARIA.length}</span>
             </a>
           </li>
         </ul>
@@ -116,10 +114,10 @@ export function Arreglos() {
         {/* categorías en celular y tablet: menú desplegable */}
         <CategoryMenu
           className="mt-8 lg:hidden"
-          opciones={CATEGORIAS.map((c) => ({ id: c.id, name: c.name, count: deCategoria(c.id).length }))}
+          opciones={CATEGORIAS}
           activa={active}
           onPick={setActive}
-          ligas={[{ href: '#funeraria', name: 'Condolencias', count: FUNERARIA.length }]}
+          ligas={[{ href: '#funeraria', name: 'Condolencias' }]}
         />
 
         <div className="mt-10 grid gap-10 lg:mt-16 lg:grid-cols-[14.5rem_1fr] lg:gap-12 xl:grid-cols-[16rem_1fr]">

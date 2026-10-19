@@ -86,7 +86,6 @@ function Sidebar({ active, onPick }: { active: CategoriaId; onPick: (c: Categori
               >
                 <span className={cn('h-px shrink-0 bg-rose transition-all duration-500', active === c.id ? 'w-5' : 'w-0 group-hover:w-3')} />
                 {c.name}
-                <span className="ml-auto font-sans text-[0.75rem] text-stone/70 tabular-nums">{PRODUCTOS.filter((p) => p.cat === c.id).length}</span>
               </button>
             </li>
           ))}
@@ -138,7 +137,7 @@ export function Arreglos() {
         {/* categorías en celular y tablet: menú desplegable */}
         <CategoryMenu
           className="mt-8 lg:hidden"
-          opciones={CATEGORIAS.map((c) => ({ id: c.id, name: c.name, count: PRODUCTOS.filter((p) => p.cat === c.id).length }))}
+          opciones={CATEGORIAS}
           activa={active}
           onPick={setActive}
         />

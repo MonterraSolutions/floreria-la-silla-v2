@@ -1,4 +1,5 @@
 import { useId, useState } from 'react'
+import { ArrowUp } from 'lucide-react'
 import { Reveal } from '@/components/Reveal'
 import { ThumbnailGallery } from '@/components/ui/thumbnail-gallery'
 import { useShop } from '@/lib/cart'
@@ -24,6 +25,14 @@ export function Funeraria() {
           <Reveal>
             <h2 className="font-display text-[clamp(2.4rem,5vw,4rem)] leading-[1.02]">Coronas y arreglos de condolencias</h2>
           </Reveal>
+          {/* regresa a la tienda */}
+          <a
+            href="#arreglos"
+            className="group inline-flex min-h-11 shrink-0 items-center gap-2 self-start text-[0.75rem] font-medium tracking-[0.16em] text-paper/70 uppercase transition-colors hover:text-paper md:self-auto"
+          >
+            <ArrowUp className="size-4 transition-transform group-hover:-translate-y-0.5" strokeWidth={1.5} />
+            Ver arreglos ocasionales
+          </a>
         </div>
 
         <div className="mt-12 grid items-center gap-12 lg:grid-cols-2 lg:gap-16">

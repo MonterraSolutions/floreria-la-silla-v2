@@ -6,6 +6,7 @@ import { CartDrawer } from '@/components/shop/CartDrawer'
 import { CartToast } from '@/components/shop/CartUI'
 import { ProductSheet } from '@/components/shop/ProductSheet'
 import { ShopProvider } from '@/lib/cart'
+import { AvisoPrivacidad, Terminos } from '@/pages/Legal'
 import { QuienesSomos } from '@/pages/QuienesSomos'
 import { Arreglos } from '@/sections/Arreglos'
 import { Contacto } from '@/sections/Contacto'
@@ -15,18 +16,20 @@ import { Footer } from '@/sections/Footer'
 import { Funeraria } from '@/sections/Funeraria'
 import { Hero } from '@/sections/Hero'
 
-// Tres vistas: la portada (arreglos, funeraria y contacto), Eventos (eventos, cotizador y contacto)
-// y Quiénes somos. #contacto existe en las dos primeras, así que no cambia de vista.
-type Vista = 'portada' | 'eventos' | 'nosotros'
+// Vistas: la portada (arreglos, funeraria y contacto), Eventos (eventos, cotizador y contacto),
+// Quiénes somos y las dos legales. #contacto existe en las dos primeras, así que no cambia de vista.
+type Vista = 'portada' | 'eventos' | 'nosotros' | 'privacidad' | 'terminos'
+
+const PAGINAS: Record<string, Vista> = { '#quienes-somos': 'nosotros', '#aviso-de-privacidad': 'privacidad', '#terminos': 'terminos' }
 
 function vistaDe(hash: string, actual: Vista): Vista {
-  if (hash === '#quienes-somos') return 'nosotros'
+  if (PAGINAS[hash]) return PAGINAS[hash]
   if (hash === '#eventos' || hash === '#cotizar') return 'eventos'
   if (hash === '#contacto') {
     // con «atrás» se regresa a la vista donde estaba ese #contacto
     const guardada = (window.history.state as { vista?: Vista } | null)?.vista
     if (guardada === 'portada' || guardada === 'eventos') return guardada
-    return actual === 'nosotros' ? 'portada' : actual
+    return actual === 'portada' || actual === 'eventos' ? actual : 'portada'
   }
   return 'portada'
 }
@@ -54,7 +57,7 @@ export default function App() {
 
   // al cambiar de vista, el ancla todavía no existe cuando el navegador intenta bajar a ella
   useLayoutEffect(() => {
-    const el = hash && hash !== '#quienes-somos' && hash !== '#eventos' ? document.querySelector(hash) : null
+    const el = hash && !PAGINAS[hash] && hash !== '#eventos' ? document.querySelector(hash) : null
     if (el) el.scrollIntoView({ behavior: 'instant' })
     else window.scrollTo({ top: 0, behavior: 'instant' })
   }, [vista]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -65,6 +68,10 @@ export default function App() {
       <Nav solid={vista !== 'portada'} />
       {vista === 'nosotros' ? (
         <QuienesSomos />
+      ) : vista === 'privacidad' ? (
+        <AvisoPrivacidad />
+      ) : vista === 'terminos' ? (
+        <Terminos />
       ) : vista === 'eventos' ? (
         <main className="bg-blush-50 pt-14 md:pt-16">
           <Eventos />

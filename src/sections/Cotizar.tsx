@@ -124,6 +124,12 @@ export function Cotizar() {
                   <WhatsAppIcon className="size-4" />
                   Enviar por WhatsApp
                 </button>
+                <p className="mt-3 text-[0.78rem] text-stone">
+                  Usamos tus datos solo para cotizar tu evento.{' '}
+                  <a href="#aviso-de-privacidad" className="underline decoration-ink/20 underline-offset-2 hover:text-ink">
+                    Aviso de privacidad
+                  </a>
+                </p>
               </div>
             </form>
           </Reveal>

@@ -89,6 +89,13 @@ function Sidebar({ active, onPick }: { active: CategoriaId; onPick: (c: Categori
               </button>
             </li>
           ))}
+          {/* condolencias tiene su propia sección: esta lleva allá */}
+          <li>
+            <a href="#funeraria" className="group flex w-full items-center gap-3 py-1.5 font-display text-[1.22rem] leading-snug text-ink/75 transition-colors hover:text-ink">
+              <span className="h-px w-0 shrink-0 bg-rose transition-all duration-500 group-hover:w-3" />
+              Condolencias
+            </a>
+          </li>
         </ul>
 
         <div className="mt-8 rounded-md bg-tile/70 px-5 py-6">
@@ -140,6 +147,7 @@ export function Arreglos() {
           opciones={CATEGORIAS}
           activa={active}
           onPick={setActive}
+          ligas={[{ href: '#funeraria', name: 'Condolencias' }]}
         />
 
         <div className="mt-10 grid gap-10 lg:mt-16 lg:grid-cols-[14.5rem_1fr] lg:gap-12 xl:grid-cols-[16rem_1fr]">

@@ -79,6 +79,17 @@ export function CartDrawer() {
     if (nombre) setE((s) => (s.nombre ? s : { ...s, nombre }))
   }, [nombre])
 
+  // «¿De parte de quién?» de la primera tarjeta llena «Tu nombre» ("Con cariño, Ana" → "Ana").
+  // Lo sigue mientras el campo esté vacío o tenga lo que puso esta misma copia; si el cliente lo cambia, ya no se toca.
+  const firma = lines.flatMap(({ product: p }) => tarjetas[p.id] ?? []).find((t) => t && t.tipo !== 'anonima' && t.firma.trim())?.firma ?? ''
+  const deFirma = firma.split(',').pop()!.trim()
+  const [copiado, setCopiado] = useState('')
+  useEffect(() => {
+    if (!deFirma) return
+    setE((s) => (!s.nombre.trim() || s.nombre === copiado ? { ...s, nombre: deFirma } : s))
+    setCopiado(deFirma)
+  }, [deFirma]) // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     try {
       localStorage.setItem(KEY, JSON.stringify({ ...e, fecha: e.fecha && e.fecha >= hoy() ? e.fecha : '' }))

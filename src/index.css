@@ -62,6 +62,41 @@ body {
   overflow-x: clip;
 }
 
+/* PROPUESTA B: pantalla por pantalla. Cada sección llena la pantalla y la rueda o el dedo saltan de una en una.
+   Solo en pantallas grandes: en celular las secciones son más altas que la pantalla y el salto estorbaría.
+   Si una sección no cabe (Eventos), se baja dentro de ella antes de pasar a la siguiente. */
+@media (min-width: 1024px) and (min-height: 640px) {
+  html:has(.pantalla) {
+    scroll-snap-type: y mandatory;
+  }
+  .pantalla-foto {
+    scroll-snap-align: start;
+  }
+  .pantalla {
+    min-height: 100svh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 4.5rem;
+    padding-bottom: 2.5rem;
+    /* el espacio del menú ya va en el relleno; con margen, el ajuste caería 64 px antes */
+    scroll-margin-top: 0;
+  }
+  /* el relleno lo pone .pantalla */
+  .pantalla > .pantalla-interior {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  /* la última: contacto y pie juntos, sin estirar */
+  .pantalla.pantalla-ultima {
+    min-height: 0;
+  }
+  main:has(> .pantalla) + footer {
+    scroll-snap-align: end;
+  }
+}
+
 body.is-locked,
 html.is-modal {
   overflow: hidden;

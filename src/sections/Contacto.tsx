@@ -12,7 +12,7 @@ const HORARIO = [
 
 export function Contacto() {
   return (
-    <section id="contacto" className="scroll-mt-16 overflow-x-clip bg-paper py-20 md:py-28">
+    <section id="contacto" data-nombre="Contacto" className="pantalla pantalla-ultima scroll-mt-16 overflow-x-clip bg-paper py-20 md:py-28">
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 md:px-8 lg:grid-cols-[1fr_1fr] lg:gap-16">
         {/* mapa */}
         <Reveal className="order-last lg:order-first">

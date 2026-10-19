@@ -22,7 +22,7 @@ const FOTOS: { img: string; alt: string; caption: string; className?: string }[]
 
 export function Eventos() {
   return (
-    <section id="eventos" className="scroll-mt-16 bg-blush-50 py-20 md:py-28">
+    <section id="eventos" data-nombre="Eventos" className="pantalla scroll-mt-16 bg-blush-50 py-20 md:py-28">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 md:px-8 lg:grid-cols-[5fr_7fr] lg:gap-16">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <Reveal>

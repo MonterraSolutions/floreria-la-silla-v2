@@ -6,13 +6,11 @@ import { cn } from '@/lib/utils'
 interface Opcion<T extends string> {
   id: T
   name: string
-  count: number
 }
 
 interface Liga {
   href: string
   name: string
-  count: number
 }
 
 /**
@@ -80,10 +78,7 @@ export function CategoryMenu<T extends string>({
       >
         <span className="sr-only">Categoría: </span>
         <span className="font-display text-[1.3rem] leading-none text-ink">{actual.name}</span>
-        <span className="ml-auto text-[0.82rem] text-stone tabular-nums">
-          {actual.count} {actual.count === 1 ? 'arreglo' : 'arreglos'}
-        </span>
-        <ChevronDown className={cn('size-5 shrink-0 text-ink/70 transition-transform duration-300', open && 'rotate-180')} strokeWidth={1.5} />
+        <ChevronDown className={cn('ml-auto size-5 shrink-0 text-ink/70 transition-transform duration-300', open && 'rotate-180')} strokeWidth={1.5} />
       </button>
 
       <AnimatePresence>
@@ -123,8 +118,7 @@ export function CategoryMenu<T extends string>({
                   style={sinContorno}
                 >
                   <span className={cn('font-display text-[1.15rem] leading-tight', sel ? 'text-rose' : 'text-ink')}>{o.name}</span>
-                  <span className="ml-auto text-[0.8rem] text-stone/80 tabular-nums">{o.count}</span>
-                  <Check className={cn('size-4 shrink-0 text-rose', !sel && 'invisible')} strokeWidth={2} />
+                  <Check className={cn('ml-auto size-4 shrink-0 text-rose', !sel && 'invisible')} strokeWidth={2} />
                 </li>
               )
             })}
@@ -133,8 +127,7 @@ export function CategoryMenu<T extends string>({
               <li key={l.href} role="none">
                 <a href={l.href} data-item onClick={() => setOpen(false)} className={fila} style={sinContorno}>
                   <span className="font-display text-[1.15rem] leading-tight text-ink">{l.name}</span>
-                  <span className="ml-auto text-[0.8rem] text-stone/80 tabular-nums">{l.count}</span>
-                  <ChevronRight className="size-4 shrink-0 text-stone" strokeWidth={1.5} />
+                  <ChevronRight className="ml-auto size-4 shrink-0 text-stone" strokeWidth={1.5} />
                 </a>
               </li>
             ))}

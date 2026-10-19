@@ -84,7 +84,7 @@ export function Contacto() {
                 {d} <span className="text-ink">{h}</span>
               </span>
             ))}
-            <StatusPill className="bg-blush-50" />
+            <StatusPill />
           </Reveal>
         </div>
       </div>

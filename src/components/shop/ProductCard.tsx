@@ -4,11 +4,12 @@ import { useShop } from '@/lib/cart'
 import { cn } from '@/lib/utils'
 
 export function Price({ value, className }: { value: number | null; className?: string }) {
-  if (value === null) return <span className={cn('font-sans text-[0.7rem] font-medium tracking-[0.16em] uppercase whitespace-nowrap text-stone', className)}>A cotizar</span>
+  // sin precio: en la misma letra que un precio, pero en gris
+  if (value === null) return <span className={cn('whitespace-nowrap', className, 'text-stone')}>A cotizar</span>
   return <span className={cn('whitespace-nowrap', className)}>{precio(value)}</span>
 }
 
-/** Recuadro del arreglo: foto sin fondo, nombre a la izquierda y precio a la derecha. */
+/** Recuadro del arreglo: foto, y abajo el nombre con el precio a la derecha (en celular, el precio debajo del nombre). */
 export function ProductCard({ p, size = 'md' }: { p: Producto; size?: 'md' | 'sm' }) {
   const { add, setQty, qtyOf, view } = useShop()
   const qty = qtyOf(p.id)
@@ -58,9 +59,9 @@ export function ProductCard({ p, size = 'md' }: { p: Producto; size?: 'md' | 'sm
         )}
       </div>
 
-      <button type="button" onClick={() => view(p.id)} className="mt-3 flex w-full cursor-pointer items-baseline justify-between gap-3 px-0.5 text-left">
-        <h4 className={cn('font-serif leading-[1.1] text-ink', size === 'md' ? 'text-[0.98rem] md:text-[1.08rem]' : 'text-[0.92rem]')}>{p.name}</h4>
-        <Price value={p.price} className={cn('font-serif text-ink', size === 'md' ? 'text-[0.98rem] md:text-[1.08rem]' : 'text-[0.92rem]')} />
+      <button type="button" onClick={() => view(p.id)} className="mt-3 flex w-full cursor-pointer flex-col gap-1 px-0.5 text-left sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
+        <h4 className={cn('min-w-0 font-serif leading-[1.1] text-ink', size === 'md' ? 'text-[0.98rem] md:text-[1.08rem]' : 'text-[0.92rem]')}>{p.name}</h4>
+        <Price value={p.price} className={cn('shrink-0 font-serif text-ink', size === 'md' ? 'text-[0.98rem] md:text-[1.08rem]' : 'text-[0.92rem]')} />
       </button>
     </article>
   )

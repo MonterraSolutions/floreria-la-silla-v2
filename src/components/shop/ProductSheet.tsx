@@ -4,7 +4,7 @@ import { ChevronRight, Minus, Plus, X } from 'lucide-react'
 import { WhatsAppIcon } from '@/components/icons'
 import { Price, ProductCard } from '@/components/shop/ProductCard'
 import { TarjetaCampos } from '@/components/shop/TarjetaCampos'
-import { CATEGORIAS, PRODUCTOS, byId, precio } from '@/lib/catalogo'
+import { byId, categoriaDe, deCategoria, precio } from '@/lib/catalogo'
 import { useShop } from '@/lib/cart'
 import { waPedido } from '@/lib/site'
 import { cn } from '@/lib/utils'
@@ -52,8 +52,8 @@ export function ProductSheet() {
     return () => window.removeEventListener('keydown', onKey)
   }, [viewing, view])
 
-  const cat = p ? CATEGORIAS.find((c) => c.id === p.cat)! : null
-  const mas = p ? PRODUCTOS.filter((x) => x.cat === p.cat && x.id !== p.id).slice(0, 4) : []
+  const cat = p ? categoriaDe(p) : null
+  const mas = p && cat ? deCategoria(cat.id).filter((x) => x.id !== p.id).slice(0, 4) : []
   const enPedido = p ? qtyOf(p.id) : 0
 
   return (

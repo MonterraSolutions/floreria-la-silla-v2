@@ -2,7 +2,12 @@
 // Los que tienen price: null son las fotos de la versión 1 (Instagram y su sitio viejo): se cotizan por WhatsApp.
 // Fotos sin fondo en public/p/, todas en el mismo lienzo 4:5 (ver scripts del scratchpad: export.py).
 
-export type CategoriaId = 'rosas' | 'box' | 'jarrones' | 'especiales'
+/** Tipo de arreglo (así viene el catálogo del cliente). */
+export type TipoId = 'rosas' | 'box' | 'jarrones' | 'especiales'
+
+// PROPUESTA B: la tienda se navega por ocasión en lugar de por tipo. Un arreglo puede estar en varias;
+// cada lista va en el orden en que se muestra.
+export type CategoriaId = 'amor' | 'cumple' | 'aniversario' | 'nacimiento' | 'gracias'
 
 export interface Categoria {
   id: CategoriaId
@@ -12,16 +17,40 @@ export interface Categoria {
 }
 
 export const CATEGORIAS: Categoria[] = [
-  { id: 'rosas', name: 'Rosas', title: 'Rosas clásicas' },
-  { id: 'box', name: 'Box y cajas', title: 'Box y cajas' },
-  { id: 'jarrones', name: 'Tulipanes y jarrones', title: 'Tulipanes y jarrones' },
-  { id: 'especiales', name: 'Orquídeas y especiales', title: 'Orquídeas y especiales' },
+  { id: 'amor', name: 'Amor', title: 'Amor' },
+  { id: 'cumple', name: 'Cumpleaños', title: 'Cumpleaños' },
+  { id: 'aniversario', name: 'Aniversario', title: 'Aniversario' },
+  { id: 'nacimiento', name: 'Nacimiento', title: 'Nacimiento' },
+  { id: 'gracias', name: 'Agradecimiento', title: 'Agradecimiento' },
 ]
+
+const POR_CATEGORIA: Record<CategoriaId, string[]> = {
+  amor: [
+    'rosas-12', 'rosas-24', 'box-18-rosas', 'rosas-50', 'cilindro-30-rosas', 'rosas-vino-tinto', 'bowl-rosas-orquideas', 'tulipanes-12',
+    'box-mixto-100-rosas', 'rosas-100-base-dorada', 'bouquet-100-rosas', 'rosas-200-base-dorada', 'canasta-250-rosas',
+  ],
+  cumple: [
+    'box-girasoles-rosas', 'bloom-box', 'box-gerberas-lisianthus', 'rosas-lisianthus-12', 'tulipanes-20', 'box-rosas-gerberas-chico',
+    'surtido-jarron', 'cilindro-girasoles', 'caja-rosas-surtida', 'tulipanes', 'tulipanes-50', 'vino-blanco-caja', 'esfera-plata',
+  ],
+  aniversario: [
+    'rosas-50-orquidea', 'rosas-100-base-dorada', 'cilindro-30-rosas', 'caja-rosas-orquideas', 'rosas-vino-tinto', 'rosas-24',
+    'surtido-especial', 'bowl-rosas-orquideas', 'jarron-negro-anturios', 'rosas-200-base-dorada',
+  ],
+  nacimiento: [
+    'box-rosas-gerberas-chico', 'tulipanes-12', 'bowl-hortensias', 'surtido-jarron', 'box-gerberas-lisianthus', 'tulipanes',
+    'orquidea-phalaenopsis-rosas',
+  ],
+  gracias: [
+    'orquidea-phalaenopsis-rosas', 'jarron-lirios', 'surtido-especial', 'bowl-hortensias', 'esfera-plata', 'cilindro-girasoles',
+    'rosas-lisianthus-12', 'jarron-negro-anturios', 'caja-rosas-orquideas',
+  ],
+}
 
 export interface Producto {
   id: string
   name: string
-  cat: CategoriaId | 'funeraria'
+  cat: TipoId | 'funeraria'
   /** Pesos MXN, sin envío. null = precio por confirmar. */
   price: number | null
   desc: string
@@ -83,6 +112,12 @@ export const FUNERARIA: Producto[] = [
 ]
 
 export const byId = (id: string) => PRODUCTOS.find((p) => p.id === id) ?? FUNERARIA.find((p) => p.id === id)
+
+/** Arreglos de una ocasión, en el orden de su lista. */
+export const deCategoria = (id: CategoriaId) => POR_CATEGORIA[id].map((x) => PRODUCTOS.find((p) => p.id === x)!)
+
+/** La ocasión principal de un arreglo (la primera lista donde aparece). */
+export const categoriaDe = (p: Producto) => CATEGORIAS.find((c) => POR_CATEGORIA[c.id].includes(p.id))
 
 export const esFuneraria = (p: Producto) => p.cat === 'funeraria'
 

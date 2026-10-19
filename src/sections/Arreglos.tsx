@@ -4,7 +4,7 @@ import { CalendarDays, ChevronRight, Clock, CreditCard, Truck } from 'lucide-rea
 import { Reveal } from '@/components/Reveal'
 import { ProductCard } from '@/components/shop/ProductCard'
 import { Carousel } from '@/components/ui/carousel'
-import { CATEGORIAS, PRODUCTOS, type CategoriaId } from '@/lib/catalogo'
+import { CATEGORIAS, deCategoria, type CategoriaId } from '@/lib/catalogo'
 import { SITE } from '@/lib/site'
 import { cn } from '@/lib/utils'
 
@@ -22,7 +22,7 @@ const label = 'text-[0.68rem] font-medium tracking-[0.24em] text-stone uppercase
  * "Ver más" se queda abierto al cambiar de categoría (el estado vive en la sección).
  */
 function Panel({ cat, all, setAll }: { cat: (typeof CATEGORIAS)[number]; all: boolean; setAll: (fn: (v: boolean) => boolean) => void }) {
-  const items = PRODUCTOS.filter((p) => p.cat === cat.id)
+  const items = deCategoria(cat.id)
 
   return (
     <motion.div
@@ -85,7 +85,7 @@ function Sidebar({ active, onPick }: { active: CategoriaId; onPick: (c: Categori
               >
                 <span className={cn('h-px shrink-0 bg-rose transition-all duration-500', active === c.id ? 'w-5' : 'w-0 group-hover:w-3')} />
                 {c.name}
-                <span className="ml-auto font-sans text-[0.75rem] text-stone/70 tabular-nums">{PRODUCTOS.filter((p) => p.cat === c.id).length}</span>
+                <span className="ml-auto font-sans text-[0.75rem] text-stone/70 tabular-nums">{deCategoria(c.id).length}</span>
               </button>
             </li>
           ))}

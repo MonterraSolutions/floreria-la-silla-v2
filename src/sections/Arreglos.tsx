@@ -132,9 +132,6 @@ export function Arreglos() {
           <h2 id="arreglos" className="scroll-mt-24 font-display text-[clamp(2.6rem,5.6vw,4.6rem)] leading-[1] text-ink">
             Arreglos ocasionales
           </h2>
-          <p className="mx-auto mt-5 max-w-lg text-[1rem] leading-relaxed text-stone">
-            Arma tu pedido con uno o varios arreglos y mándanoslo por WhatsApp. Le ponemos tu tarjeta y lo llevamos a donde nos digas.
-          </p>
         </Reveal>
 
         {/* categorías en celular y tablet: texto con línea fina bajo la activa */}

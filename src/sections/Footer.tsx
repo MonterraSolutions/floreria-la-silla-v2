@@ -38,7 +38,15 @@ export function Footer() {
       </div>
       <div className="border-t border-snow/10">
         <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4 text-xs text-snow/45 sm:flex-row sm:justify-between md:px-8">
-          <span>© {new Date().getFullYear()} Florería La Silla</span>
+          <span className="flex flex-wrap gap-x-4 gap-y-1">
+            <span>© {new Date().getFullYear()} Florería La Silla</span>
+            <a href="#aviso-de-privacidad" className="hover:text-snow">
+              Aviso de privacidad
+            </a>
+            <a href="#terminos" className="hover:text-snow">
+              Términos y condiciones
+            </a>
+          </span>
           <span>Sitio web por Monterra Solutions</span>
         </div>
       </div>

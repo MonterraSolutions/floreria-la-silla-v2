@@ -317,6 +317,16 @@ export function CartDrawer() {
                     {sent ? 'Listo. Si no se abrió WhatsApp, escríbenos al ' : 'Te confirmamos disponibilidad y envío al '}
                     <span className="text-ink">{SITE.whatsapp}</span>
                   </p>
+                  <p className="mt-1.5 text-center text-[0.72rem] text-stone/80">
+                    Al enviar aceptas los{' '}
+                    <a href="#terminos" onClick={() => setCartOpen(false)} className="underline decoration-ink/20 underline-offset-2 hover:text-ink">
+                      términos
+                    </a>{' '}
+                    y el{' '}
+                    <a href="#aviso-de-privacidad" onClick={() => setCartOpen(false)} className="underline decoration-ink/20 underline-offset-2 hover:text-ink">
+                      aviso de privacidad
+                    </a>
+                  </p>
                 </footer>
               </>
             )}

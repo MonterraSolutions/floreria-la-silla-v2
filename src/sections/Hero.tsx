@@ -13,7 +13,7 @@ function rise(delay: number, play: boolean) {
 
 export function Hero({ play }: { play: boolean }) {
   return (
-    <section id="inicio" className="relative isolate flex min-h-svh items-end overflow-hidden bg-night text-snow">
+    <section id="inicio" className="relative isolate flex min-h-svh items-center overflow-hidden bg-night text-snow">
       <motion.img
         src="img/boda-ramo-pareja.webp"
         alt="Ramo de novia con rosas, lavanda y suculenta, hecho por Florería La Silla"
@@ -22,26 +22,24 @@ export function Hero({ play }: { play: boolean }) {
         transition={{ duration: 2.4, ease }}
         className="absolute inset-0 -z-10 size-full object-cover object-[38%_50%]"
       />
-      {/* oscurece abajo y a la izquierda para que el texto se lea sin tapar el ramo */}
+      {/* B: todo va al centro, así que se oscurece parejo (un poco más en medio, donde va el texto) */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgba(28,28,32,0.9)_0%,rgba(28,28,32,0.55)_50%,rgba(28,28,32,0.2)_100%)] md:bg-[linear-gradient(to_right,rgba(28,28,32,0.88)_0%,rgba(28,28,32,0.6)_40%,rgba(28,28,32,0.1)_70%)]"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_70%_60%_at_50%_55%,rgba(11,10,9,0.72)_0%,rgba(11,10,9,0.55)_60%,rgba(11,10,9,0.45)_100%)]"
       />
 
-      <div className="mx-auto w-full max-w-7xl px-4 pt-32 pb-16 md:px-8 md:pb-24">
-        {/* logo con la descripción a un lado (en celular, debajo) */}
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-10">
-          <motion.h1 {...rise(0.2, play)} className="shrink-0">
-            <img src="brand/logo-blanco.png" alt="Florería La Silla" width={1600} height={1128} className="w-[min(72vw,17rem)] md:w-[22rem] lg:w-[25rem]" />
-          </motion.h1>
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 pt-28 pb-16 text-center md:px-8">
+        {/* B: logo al centro y la descripción debajo */}
+        <motion.h1 {...rise(0.2, play)}>
+          <img src="brand/logo-blanco.png" alt="Florería La Silla" width={1600} height={1128} className="w-[min(76vw,18rem)] md:w-[24rem] lg:w-[27rem]" />
+        </motion.h1>
 
-          <motion.div {...rise(0.35, play)} className="max-w-xs md:border-l md:border-snow/35 md:pl-10">
-            <p className="font-display text-[1.7rem] leading-tight md:text-[2rem]">Desde {SITE.since}</p>
-            <p className="mt-3 text-[1.05rem] leading-relaxed text-snow/85 md:text-lg">Arreglos florales para toda ocasión en Monterrey.</p>
-          </motion.div>
-        </div>
+        <motion.div {...rise(0.35, play)} className="mt-8 md:mt-10">
+          <p className="font-display text-[1.9rem] leading-tight md:text-[2.4rem]">Desde {SITE.since}</p>
+          <p className="mx-auto mt-2 max-w-md text-[1.05rem] leading-relaxed text-snow/85 md:text-lg">Arreglos florales para toda ocasión en Monterrey.</p>
+        </motion.div>
 
-        <motion.div {...rise(0.5, play)} className="mt-9 flex flex-wrap items-center gap-3">
+        <motion.div {...rise(0.5, play)} className="mt-9 flex flex-wrap items-center justify-center gap-3">
           <a
             href="#arreglos"
             className="inline-flex min-h-12 items-center rounded-sm bg-snow px-7 text-[0.8rem] font-normal tracking-[0.16em] text-night uppercase transition hover:bg-snow/85"

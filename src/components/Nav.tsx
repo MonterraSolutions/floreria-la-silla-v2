@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { ChevronRight, Menu, X } from 'lucide-react'
+import { WhatsAppIcon } from '@/components/icons'
 import { CartButton } from '@/components/shop/CartUI'
 import { SocialTooltip } from '@/components/ui/social-media'
 import { StatusPill } from '@/components/StatusPill'
 import { SOCIALS } from '@/lib/socials'
+import { SITE, wa } from '@/lib/site'
 import { cn } from '@/lib/utils'
 
 type Link = { href: string; label: string; children?: { href: string; label: string }[] }
@@ -20,6 +22,16 @@ const LINKS: Link[] = [
   },
   { href: '#eventos', label: 'Eventos' },
   { href: '#cotizar', label: 'Cotizar' },
+  { href: '#quienes-somos', label: 'Quiénes somos' },
+  { href: '#contacto', label: 'Contacto' },
+]
+
+// En celular, todo al mismo nivel: renglones parejos en lugar de títulos grandes con subtemas.
+const MENU_CELULAR = [
+  { href: '#arreglos', label: 'Arreglos ocasionales' },
+  { href: '#funeraria', label: 'Condolencias' },
+  { href: '#eventos', label: 'Eventos' },
+  { href: '#cotizar', label: 'Cotizar evento' },
   { href: '#quienes-somos', label: 'Quiénes somos' },
   { href: '#contacto', label: 'Contacto' },
 ]
@@ -102,41 +114,64 @@ export function Nav({ solid = false }: { solid?: boolean }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-50 flex flex-col bg-paper text-ink px-6 pt-5 pb-10 lg:hidden"
+            className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-paper px-5 pt-3.5 pb-8 text-ink lg:hidden"
             role="dialog"
             aria-modal="true"
             aria-label="Menú"
           >
             <div className="flex items-center justify-between">
-              <img src="brand/rosa-negro.png" alt="" className="size-10" />
+              <a href="#inicio" onClick={() => setOpen(false)} className="flex items-center gap-2.5" aria-label="Florería La Silla, inicio">
+                <img src="brand/rosa-negro.png" alt="" width={600} height={593} className="size-9" />
+                <span className="flex flex-col leading-none">
+                  <span className="font-display text-[0.62rem] tracking-[0.34em] opacity-70">FLORERÍA</span>
+                  <span className="font-display text-xl tracking-[0.12em]">LA SILLA</span>
+                </span>
+              </a>
               <button type="button" onClick={() => setOpen(false)} className="grid size-11 cursor-pointer place-items-center rounded-full ring-1 ring-ink/15" aria-label="Cerrar menú">
-                <X className="size-5" />
+                <X className="size-5" strokeWidth={1.5} />
               </button>
             </div>
-            <ul className="mt-12 flex flex-col gap-5">
-              {LINKS.map((l, i) => (
-                <motion.li key={l.href} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 + i * 0.05 }}>
-                  <a href={l.href} onClick={() => setOpen(false)} className="font-display text-4xl">
+
+            <ul className="mt-8 border-t border-ink/10">
+              {MENU_CELULAR.map((l, i) => (
+                <motion.li
+                  key={l.href}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.04 + i * 0.04, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  className="border-b border-ink/10"
+                >
+                  <a href={l.href} onClick={() => setOpen(false)} className="group flex min-h-14 items-center justify-between gap-4 font-display text-[1.45rem] leading-none transition-colors active:text-rose">
                     {l.label}
+                    <ChevronRight className="size-5 shrink-0 text-stone transition-transform group-active:translate-x-0.5" strokeWidth={1.5} />
                   </a>
-                  {l.children && (
-                    <ul className="mt-2 flex flex-col gap-1 pl-1">
-                      {l.children.map((c) => (
-                        <li key={c.href}>
-                          <a href={c.href} onClick={() => setOpen(false)} className="inline-flex min-h-11 items-center text-[1.05rem] text-stone">
-                            {c.label}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </motion.li>
               ))}
             </ul>
-            <div className="mt-auto flex flex-col items-start gap-6">
-              <StatusPill withDelivery className="flex-wrap" />
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+              className="mt-auto flex flex-col gap-5 pt-10"
+            >
+              <a
+                href={wa()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex min-h-13 items-center justify-center gap-2.5 rounded-sm bg-ink text-[0.78rem] tracking-[0.16em] text-paper uppercase transition hover:bg-rose"
+              >
+                <WhatsAppIcon className="size-5" />
+                Pedir por WhatsApp
+              </a>
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[0.88rem]">
+                <StatusPill />
+                <a href={SITE.phoneHref} className="text-stone">
+                  {SITE.phone}
+                </a>
+              </div>
               <SocialTooltip items={SOCIALS} tooltipPosition="top" className="justify-start" />
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

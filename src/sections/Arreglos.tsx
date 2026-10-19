@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { CalendarDays, ChevronRight, Clock, CreditCard, Truck } from 'lucide-react'
+import { CalendarDays, Clock, CreditCard, Truck } from 'lucide-react'
 import { Reveal } from '@/components/Reveal'
 import { ProductCard } from '@/components/shop/ProductCard'
-import { Carousel } from '@/components/ui/carousel'
 import { CATEGORIAS, deCategoria, type CategoriaId } from '@/lib/catalogo'
 import { SITE } from '@/lib/site'
 import { cn } from '@/lib/utils'
@@ -17,11 +16,8 @@ const INFO = [
 ]
 
 const label = 'text-[0.68rem] font-medium tracking-[0.24em] text-stone uppercase'
-/**
- * La categoría elegida: carrusel, y "ver más" la abre en cuadrícula. Cambia en su lugar, sin mover la página.
- * "Ver más" se queda abierto al cambiar de categoría (el estado vive en la sección).
- */
-function Panel({ cat, all, setAll }: { cat: (typeof CATEGORIAS)[number]; all: boolean; setAll: (fn: (v: boolean) => boolean) => void }) {
+/** La categoría elegida, siempre abierta en cuadrícula (propuesta B: sin carrusel ni "ver más"). Cambia en su lugar, sin mover la página. */
+function Panel({ cat }: { cat: (typeof CATEGORIAS)[number] }) {
   const items = deCategoria(cat.id)
 
   return (
@@ -32,37 +28,12 @@ function Panel({ cat, all, setAll }: { cat: (typeof CATEGORIAS)[number]; all: bo
       transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
       className="pb-10"
     >
-      <div className="mb-4 flex items-end justify-end gap-4 lg:mb-7 lg:justify-between">
-        <h3 className="max-lg:sr-only font-display text-[clamp(1.6rem,2.8vw,2.3rem)] leading-none text-ink">{cat.title}</h3>
-        <button
-          type="button"
-          onClick={() => setAll((v) => !v)}
-          className="group inline-flex min-h-11 shrink-0 cursor-pointer items-center gap-1 text-[0.7rem] font-medium tracking-[0.18em] text-stone uppercase transition-colors hover:text-rose"
-          aria-expanded={all}
-        >
-          {all ? 'Ver menos' : 'Ver más'}
-          <ChevronRight className={cn('size-4 transition-transform', all ? '-rotate-90' : 'group-hover:translate-x-0.5')} strokeWidth={1.5} />
-        </button>
+      <h3 className="mb-7 font-display text-[clamp(1.6rem,2.8vw,2.3rem)] leading-none text-ink max-lg:sr-only">{cat.title}</h3>
+      <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 md:grid-cols-3 xl:grid-cols-4">
+        {items.map((p) => (
+          <ProductCard key={p.id} p={p} />
+        ))}
       </div>
-
-      {all ? (
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 md:grid-cols-3 xl:grid-cols-4"
-        >
-          {items.map((p) => (
-            <ProductCard key={p.id} p={p} />
-          ))}
-        </motion.div>
-      ) : (
-        <Carousel label={cat.title} resetKey={cat.id} itemClassName="w-[64%] sm:w-[calc((100%-2rem)/2.6)] md:w-[calc((100%-2rem)/3)] xl:w-[calc((100%-3rem)/4)]">
-          {items.map((p) => (
-            <ProductCard key={p.id} p={p} />
-          ))}
-        </Carousel>
-      )}
     </motion.div>
   )
 }
@@ -122,7 +93,6 @@ function Sidebar({ active, onPick }: { active: CategoriaId; onPick: (c: Categori
 
 export function Arreglos() {
   const [active, setActive] = useState<CategoriaId>(CATEGORIAS[0].id)
-  const [all, setAll] = useState(false)
   const cat = CATEGORIAS.find((c) => c.id === active)!
 
   return (
@@ -164,7 +134,7 @@ export function Arreglos() {
           <Sidebar active={active} onPick={setActive} />
           <div className="min-w-0 lg:border-l lg:border-ink/10 lg:pl-12" role="tabpanel" aria-label={cat.title}>
             <AnimatePresence mode="wait" initial={false}>
-              <Panel key={cat.id} cat={cat} all={all} setAll={setAll} />
+              <Panel key={cat.id} cat={cat} />
             </AnimatePresence>
             <p className="border-t border-ink/10 pt-6 text-[0.82rem] text-stone lg:hidden">* Precios más envío. La flor está sujeta a disponibilidad de color y temporada.</p>
           </div>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { SITE } from '@/lib/site'
 
@@ -12,31 +12,19 @@ function rise(delay: number, play: boolean) {
   }
 }
 
-/** true en pantallas de compu; el video solo se baja ahí (en celular sigue la foto) */
-function useDesktop() {
-  const [desktop, setDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches)
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)')
-    const onChange = () => setDesktop(mq.matches)
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [])
-  return desktop
-}
-
 export function Hero({ play }: { play: boolean }) {
-  const desktop = useDesktop()
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const video = useRef<HTMLVideoElement>(null)
 
   // el video arranca cuando sube el telón del intro, corre una vez y se queda en el último cuadro
   useEffect(() => {
     if (play) video.current?.play().catch(() => {})
-  }, [play, desktop])
+  }, [play])
 
+  // en celular es el mismo video recortado al centro, sobre el arreglo (falta el vertical de Flow)
   return (
     <section id="inicio" className="relative isolate flex min-h-svh items-end overflow-hidden bg-ink text-paper">
-      {desktop && !reduce ? (
+      {!reduce ? (
         <video
           ref={video}
           src="video/portada-compu.mp4"
@@ -45,22 +33,13 @@ export function Hero({ play }: { play: boolean }) {
           playsInline
           preload="auto"
           aria-hidden="true"
-          className="absolute inset-0 -z-10 size-full object-cover"
+          className="absolute inset-0 -z-10 size-full object-cover object-[49%_50%] md:object-center"
         />
-      ) : desktop ? (
+      ) : (
         <img
           src="video/portada-compu-final.jpg"
           alt="Arreglo en caja rosa de Florería La Silla sobre una mesa de mármol"
-          className="absolute inset-0 -z-10 size-full object-cover"
-        />
-      ) : (
-        <motion.img
-          src="img/boda-ramo-pareja.webp"
-          alt="Ramo de novia con rosas, lavanda y suculenta, hecho por Florería La Silla"
-          initial={{ scale: 1.06 }}
-          animate={play ? { scale: 1 } : undefined}
-          transition={{ duration: 2.4, ease }}
-          className="absolute inset-0 -z-10 size-full object-cover object-[38%_50%]"
+          className="absolute inset-0 -z-10 size-full object-cover object-[49%_50%] md:object-center"
         />
       )}
       {/* oscurece abajo (celular) o solo la franja izquierda (compu) para que el texto se lea sin apagar el arreglo */}

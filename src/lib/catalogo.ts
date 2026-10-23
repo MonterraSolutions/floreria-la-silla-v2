@@ -87,7 +87,9 @@ export const byId = (id: string) => PRODUCTOS.find((p) => p.id === id) ?? FUNERA
 export const esFuneraria = (p: Producto) => p.cat === 'funeraria'
 
 /** Foto del arreglo; chica para miniaturas. */
-export const foto = (p: Producto, chica = false) => `${p.img ?? `p/${p.id}`}${chica ? '-sm' : ''}.webp`
+/** Subirlo cada vez que cambien fotos (el navegador y el CDN guardan las anteriores una semana). */
+const FOTOS_V = 2
+export const foto = (p: Producto, chica = false) => `${p.img ?? `p/${p.id}`}${chica ? '-sm' : ''}.webp?v=${FOTOS_V}`
 
 const mxn = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 })
 /** $1,790 */

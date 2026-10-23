@@ -24,8 +24,8 @@
   --color-muted-foreground: var(--color-stone);
   --color-border: color-mix(in oklab, var(--color-ink) 12%, transparent);
 
-  --font-display: "Prata", "Georgia", serif;
-  --font-serif: "Prata", "Georgia", serif;
+  --font-display: "Poiret One", "Urbanist", sans-serif;
+  --font-serif: "Poiret One", "Urbanist", sans-serif;
   --font-sans: "Urbanist", ui-sans-serif, system-ui, sans-serif;
 
   --ease-petal: cubic-bezier(0.22, 1, 0.36, 1);

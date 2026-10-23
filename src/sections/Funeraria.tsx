@@ -35,7 +35,7 @@ export function Funeraria() {
           </a>
         </div>
 
-        <div className="mt-12 grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="mt-12 grid items-center gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
           {/* galería de piezas: la que se ve es la que va en el listón */}
           <Reveal className="min-w-0">
             <ThumbnailGallery
@@ -45,10 +45,10 @@ export function Funeraria() {
             />
           </Reveal>
 
-          {/* gadget: escribe el listón */}
-          <Reveal delay={0.1}>
-            <div className="rounded-md bg-night-soft/60 p-5 ring-1 ring-snow/10 sm:p-7">
-              <div className="relative flex h-40 items-center justify-center overflow-hidden" aria-hidden="true">
+          {/* gadget: escribe el listón; en compu mide lo mismo que la foto (46px = pie con el nombre de la pieza) */}
+          <Reveal delay={0.1} className="lg:relative lg:self-stretch">
+            <div className="rounded-md bg-night-soft/60 flex flex-col p-5 ring-1 ring-snow/10 sm:p-7 lg:absolute lg:inset-x-0 lg:top-0 lg:bottom-[46px]">
+              <div className="relative flex h-40 items-center justify-center overflow-hidden lg:h-auto lg:min-h-24 lg:flex-1" aria-hidden="true">
                 {/* listón de satín nacarado: banda al frente, puntas dobladas por detrás */}
                 <div className="liston w-[78%]">
                   <span className="liston-cola liston-cola-izq" />

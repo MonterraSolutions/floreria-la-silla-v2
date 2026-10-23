@@ -1,5 +1,5 @@
 import { Minus, Plus } from 'lucide-react'
-import { precio, type Producto } from '@/lib/catalogo'
+import { foto, precio, type Producto } from '@/lib/catalogo'
 import { useShop } from '@/lib/cart'
 import { cn } from '@/lib/utils'
 
@@ -24,7 +24,7 @@ export function ProductCard({ p, size = 'md' }: { p: Producto; size?: 'md' | 'sm
           aria-label={`Ver ${p.name}`}
         >
           <img
-            src={`p/${p.id}-sm.webp`}
+            src={foto(p, true)}
             alt={p.name}
             loading="lazy"
             width={480}

@@ -4,7 +4,7 @@ import { ChevronRight, Minus, Plus, X } from 'lucide-react'
 import { WhatsAppIcon } from '@/components/icons'
 import { Price, ProductCard } from '@/components/shop/ProductCard'
 import { TarjetaCampos } from '@/components/shop/TarjetaCampos'
-import { CATEGORIAS, PRODUCTOS, byId, precio } from '@/lib/catalogo'
+import { CATEGORIAS, PRODUCTOS, byId, foto, precio } from '@/lib/catalogo'
 import { useShop } from '@/lib/cart'
 import { waPedido } from '@/lib/site'
 import { cn } from '@/lib/utils'
@@ -107,7 +107,7 @@ export function ProductSheet() {
                     initial={{ opacity: 0, scale: 0.97 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    src={`p/${p.id}.webp`}
+                    src={foto(p)}
                     alt={p.name}
                     width={800}
                     height={1000}

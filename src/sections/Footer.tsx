@@ -47,7 +47,12 @@ export function Footer() {
               Términos y condiciones
             </a>
           </span>
-          <span>Sitio web por Monterra Solutions</span>
+          <span>
+            Sitio web por{' '}
+            <a href="https://monterra-solutions.com" target="_blank" rel="noopener" className="underline decoration-snow/25 underline-offset-4 hover:text-snow">
+              Monterra Solutions
+            </a>
+          </span>
         </div>
       </div>
     </footer>

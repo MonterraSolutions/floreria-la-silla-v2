@@ -35,7 +35,7 @@ export function Intro({ onDone }: { onDone: () => void }) {
           <img className="intro-rose" src="brand/capa-rosa.png" alt="" width={1600} height={1128} />
           <span className="intro-shine" />
         </div>
-        <span className="intro-tag">Boutique floral · Monterrey · desde 1992</span>
+        <span className="intro-tag">Boutique floral</span>
       </div>
     </div>
   )

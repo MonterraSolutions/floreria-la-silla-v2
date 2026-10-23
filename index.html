@@ -1,29 +1,128 @@
 <!doctype html>
-<html lang="es-MX">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Florería La Silla · Boutique floral en Monterrey</title>
-    <meta name="description" content="Boutique floral en Monterrey desde 1992. Arreglos para cualquier ocasión, flores para eventos, coronas y condolencias, con entrega a domicilio en todo el área metropolitana." />
-    <meta name="theme-color" content="#F6DFD9" />
-    <meta property="og:title" content="Florería La Silla · Boutique floral en Monterrey" />
-    <meta property="og:description" content="Arreglos, eventos y coronas con entrega a domicilio en Monterrey y su área metropolitana." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://monterrasolutions.github.io/floreria-la-silla-v2/" />
-    <meta property="og:image" content="https://monterrasolutions.github.io/floreria-la-silla-v2/og.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" type="image/png" href="/floreria-la-silla-v2/brand/favicon.png" />
-    <link rel="apple-touch-icon" href="/floreria-la-silla-v2/brand/apple-touch-icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Prata&family=Nunito+Sans:opsz,wght@6..12,300..600&display=swap" rel="stylesheet" />
-    <link rel="preload" as="image" href="/floreria-la-silla-v2/brand/logo-negro.png" />
-    <script type="module" crossorigin src="/floreria-la-silla-v2/assets/index-DRjti23i.js"></script>
-    <link rel="stylesheet" crossorigin href="/floreria-la-silla-v2/assets/index-CQUJWp3V.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Florería La Silla · Propuestas</title>
+<style>
+  :root {
+    --bg: #e9e6e2;
+    --text: #2a2826;
+    --muted: #77716b;
+    --frame: #111;
+    --btn: #fff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px 18px;
+    padding: 14px 16px 4px;
+  }
+  h1 { margin: 0; font-size: 17px; font-weight: 600; }
+  .tamanos { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tamanos button, .recargar {
+    border: 1px solid #cfc9c2;
+    background: var(--btn);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .tamanos button[aria-pressed="true"] { background: var(--text); color: #fff; border-color: var(--text); }
+  main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 12px 16px 20px;
+  }
+  figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  figcaption { display: flex; align-items: center; gap: 12px; font-weight: 600; }
+  figcaption span { font-weight: 400; color: var(--muted); }
+  .telefono {
+    padding: 12px;
+    border-radius: 48px;
+    background: var(--frame);
+    box-shadow: 0 30px 60px -25px rgba(0,0,0,.45);
+  }
+  iframe {
+    display: block;
+    border: 0;
+    border-radius: 38px;
+    background: #fff;
+    max-width: 100%;
+  }
+  figure, .telefono { max-width: 100%; }
+  /* En la compu el teléfono se escala para caber completo en la pantalla */
+  @media (min-width: 701px) {
+    .telefono, iframe { max-width: none; }
+  }
+  @media (max-width: 700px) {
+    .tamanos { display: none; }
+    main { gap: 28px; padding: 12px 16px 32px; }
+    .telefono { padding: 8px; border-radius: 36px; }
+    iframe { border-radius: 28px; height: 78vh; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Florería La Silla en celular</h1>
+    <div class="tamanos" role="group" aria-label="Tamaño de celular">
+      <button type="button" data-w="390" data-h="844" aria-pressed="true">iPhone 15</button>
+      <button type="button" data-w="375" data-h="667">iPhone SE</button>
+      <button type="button" data-w="412" data-h="915">Android</button>
+    </div>
+  </header>
+
+  <main>
+    <figure>
+      <figcaption>Propuesta A <span>clara y rosa</span></figcaption>
+      <div class="telefono"><iframe id="a" src="a/" title="Propuesta A en celular"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>Propuesta B <span>oscura</span></figcaption>
+      <div class="telefono"><iframe id="b" src="b/" title="Propuesta B en celular"></iframe></div>
+    </figure>
+  </main>
+
+<script>
+  const frames = [...document.querySelectorAll('iframe')]
+  const telefonos = [...document.querySelectorAll('.telefono')]
+  let actual = [390, 844]
+  const medir = (w, h) => {
+    actual = [+w, +h]
+    frames.forEach((f) => { f.width = w; f.height = h })
+    if (window.innerWidth <= 700) {
+      telefonos.forEach((t) => { t.style.zoom = '' })
+      return
+    }
+    const libre = window.innerHeight - telefonos[0].getBoundingClientRect().top - window.scrollY - 20
+    const escala = Math.min(1, libre / (+h + 24))
+    telefonos.forEach((t) => { t.style.zoom = escala })
+  }
+  medir(...actual)
+  window.addEventListener('resize', () => medir(...actual))
+  document.querySelectorAll('.tamanos button').forEach((b) =>
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.tamanos button').forEach((x) => x.setAttribute('aria-pressed', x === b))
+      medir(b.dataset.w, b.dataset.h)
+    }),
+  )
+</script>
+</body>
 </html>

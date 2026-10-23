@@ -24,6 +24,9 @@ function useDesktop() {
   return desktop
 }
 
+/** Subirlo cada vez que cambie el video (el navegador y el CDN guardan la versión anterior). */
+const VIDEO_V = 2
+
 export function Hero({ play }: { play: boolean }) {
   const desktop = useDesktop()
   const formato = desktop ? 'compu' : 'celular'
@@ -41,8 +44,8 @@ export function Hero({ play }: { play: boolean }) {
         <video
           key={formato}
           ref={video}
-          src={`video/portada-${formato}.mp4`}
-          poster={`video/portada-${formato}-inicio.jpg`}
+          src={`video/portada-${formato}.mp4?v=${VIDEO_V}`}
+          poster={`video/portada-${formato}-inicio.jpg?v=${VIDEO_V}`}
           muted
           playsInline
           preload="auto"
@@ -51,7 +54,7 @@ export function Hero({ play }: { play: boolean }) {
         />
       ) : (
         <img
-          src={`video/portada-${formato}-final.jpg`}
+          src={`video/portada-${formato}-final.jpg?v=${VIDEO_V}`}
           alt="Arreglo en caja rosa de Florería La Silla sobre una mesa de mármol"
           className="absolute inset-0 -z-10 size-full object-cover"
         />

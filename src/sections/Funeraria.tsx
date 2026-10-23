@@ -48,7 +48,7 @@ export function Funeraria() {
           {/* gadget: escribe el listón */}
           <Reveal delay={0.1}>
             <div className="rounded-md bg-night-soft/60 p-5 ring-1 ring-snow/10 sm:p-7">
-              <div className="relative flex h-40 items-center justify-center overflow-hidden rounded-md bg-[radial-gradient(ellipse_at_center,#2b2424_0%,#171414_75%)]" aria-hidden="true">
+              <div className="relative flex h-40 items-center justify-center overflow-hidden" aria-hidden="true">
                 {/* listón de satín nacarado: banda al frente, puntas dobladas por detrás */}
                 <div className="liston w-[78%]">
                   <span className="liston-cola liston-cola-izq" />

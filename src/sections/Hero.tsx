@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { SITE } from '@/lib/site'
 
@@ -12,34 +12,48 @@ function rise(delay: number, play: boolean) {
   }
 }
 
+/** true en pantallas de compu: video horizontal; en celular va el vertical */
+function useDesktop() {
+  const [desktop, setDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches)
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)')
+    const onChange = () => setDesktop(mq.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+  return desktop
+}
+
 export function Hero({ play }: { play: boolean }) {
+  const desktop = useDesktop()
+  const formato = desktop ? 'compu' : 'celular'
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const video = useRef<HTMLVideoElement>(null)
 
   // el video arranca cuando sube el telón del intro, corre una vez y se queda en el último cuadro
   useEffect(() => {
     if (play) video.current?.play().catch(() => {})
-  }, [play])
+  }, [play, formato])
 
-  // en celular es el mismo video recortado al centro, sobre el arreglo (falta el vertical de Flow)
   return (
     <section id="inicio" className="relative isolate flex min-h-svh items-end overflow-hidden bg-ink text-paper">
       {!reduce ? (
         <video
+          key={formato}
           ref={video}
-          src="video/portada-compu.mp4"
-          poster="video/portada-compu-inicio.jpg"
+          src={`video/portada-${formato}.mp4`}
+          poster={`video/portada-${formato}-inicio.jpg`}
           muted
           playsInline
           preload="auto"
           aria-hidden="true"
-          className="absolute inset-0 -z-10 size-full object-cover object-[49%_50%] md:object-center"
+          className="absolute inset-0 -z-10 size-full object-cover"
         />
       ) : (
         <img
-          src="video/portada-compu-final.jpg"
+          src={`video/portada-${formato}-final.jpg`}
           alt="Arreglo en caja rosa de Florería La Silla sobre una mesa de mármol"
-          className="absolute inset-0 -z-10 size-full object-cover object-[49%_50%] md:object-center"
+          className="absolute inset-0 -z-10 size-full object-cover"
         />
       )}
       {/* oscurece abajo (celular) o solo la franja izquierda (compu) para que el texto se lea sin apagar el arreglo */}

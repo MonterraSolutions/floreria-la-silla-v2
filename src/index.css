@@ -238,6 +238,8 @@ html.is-modal {
   mask: url("/brand/logo-negro.png") center / contain no-repeat;
   background: linear-gradient(115deg, transparent 40%, rgba(0, 0, 0, 0.85) 50%, transparent 60%);
   background-size: 240% 100%;
+  /* sin repetir: la siguiente copia del degradado asomaba en la esquina del logo antes del brillo */
+  background-repeat: no-repeat;
   background-position: 160% 0;
   animation: introShine 1.1s ease 1.85s forwards;
 }

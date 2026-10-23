@@ -9,8 +9,8 @@ export function Intro({ onDone }: { onDone: () => void }) {
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     document.body.classList.add('is-locked')
-    // «Boutique floral» termina de aparecer a los 1.8 s: se deja un segundo para leerlo antes de subir el telón
-    const finish = window.setTimeout(() => setDone(true), reduce ? 500 : 2800)
+    // «Boutique floral» termina de aparecer a los 1.8 s: se deja medio segundo para leerlo antes de subir el telón
+    const finish = window.setTimeout(() => setDone(true), reduce ? 500 : 2300)
     const safety = window.setTimeout(() => setDone(true), 6000)
     return () => {
       window.clearTimeout(finish)

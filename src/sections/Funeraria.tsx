@@ -21,14 +21,14 @@ export function Funeraria() {
   return (
     <section id="funeraria" className="scroll-mt-16 bg-night text-snow">
       <div className="mx-auto max-w-7xl px-4 py-20 md:px-8 md:py-28">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="flex flex-col gap-6">
           <Reveal>
-            <h2 className="font-display text-[clamp(2.4rem,5vw,4rem)] leading-[1.02]">Coronas y arreglos de condolencias</h2>
+            <h2 className="font-display text-[clamp(2.4rem,4.3vw,4rem)] leading-[1.02] lg:whitespace-nowrap">Coronas y arreglos de condolencias</h2>
           </Reveal>
           {/* regresa a la tienda (Condolencias es una de sus categorías) */}
           <a
             href="#arreglos"
-            className="group inline-flex min-h-11 shrink-0 items-center gap-2 self-start text-[0.75rem] font-medium tracking-[0.16em] text-snow/70 uppercase transition-colors hover:text-snow md:self-auto"
+            className="group inline-flex min-h-11 shrink-0 items-center gap-2 self-start text-[0.75rem] font-medium tracking-[0.16em] text-snow/70 uppercase transition-colors hover:text-snow"
           >
             <ArrowUp className="size-4 transition-transform group-hover:-translate-y-0.5" strokeWidth={1.5} />
             Ver arreglos ocasionales

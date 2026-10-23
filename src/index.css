@@ -254,7 +254,7 @@ html.is-modal {
   text-transform: uppercase;
   color: var(--color-stone);
   opacity: 0;
-  animation: introFade 0.9s ease 1.6s forwards;
+  animation: introFade 0.7s ease 1.1s forwards;
 }
 @keyframes introFade {
   to { opacity: 1; }

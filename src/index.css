@@ -58,6 +58,12 @@ body {
   overflow-x: clip;
 }
 
+/* Poiret One viene en un solo grosor y es muy delgada: se engrosa con un trazo del mismo color */
+.font-display,
+.font-serif {
+  -webkit-text-stroke: max(0.7px, 0.035em) currentColor;
+}
+
 body.is-locked,
 html.is-modal {
   overflow: hidden;
@@ -87,7 +93,6 @@ html.is-modal {
 /* ===== LISTÓN NACARADO (condolencias) ===== */
 .liston {
   position: relative;
-  transform: perspective(700px) rotateX(12deg) rotate(-2deg);
 }
 
 /* banda: satín marfil con vetas de luz y un tornasol frío muy leve */
@@ -233,6 +238,8 @@ html.is-modal {
   mask: url("/brand/logo-negro.png") center / contain no-repeat;
   background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.95) 50%, transparent 60%);
   background-size: 240% 100%;
+  /* sin repetir: la siguiente copia del degradado asomaba en la esquina del logo antes del brillo */
+  background-repeat: no-repeat;
   background-position: 160% 0;
   animation: introShine 1.1s ease 1.85s forwards;
 }
@@ -247,7 +254,7 @@ html.is-modal {
   text-transform: uppercase;
   color: var(--color-stone);
   opacity: 0;
-  animation: introFade 0.9s ease 1.6s forwards;
+  animation: introFade 0.7s ease 1.1s forwards;
 }
 @keyframes introFade {
   to { opacity: 1; }

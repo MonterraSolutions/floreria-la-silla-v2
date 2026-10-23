@@ -1,7 +1,6 @@
 import { ArrowUpRight, Clock, Mail, MapPin, Phone } from 'lucide-react'
 import { WhatsAppIcon } from '@/components/icons'
 import { Reveal } from '@/components/Reveal'
-import { StatusPill } from '@/components/StatusPill'
 import { SITE, mapsHref, wa } from '@/lib/site'
 
 const HORARIO = [
@@ -84,7 +83,6 @@ export function Contacto() {
                 {d} <span className="text-ink">{h}</span>
               </span>
             ))}
-            <StatusPill />
           </Reveal>
         </div>
       </div>

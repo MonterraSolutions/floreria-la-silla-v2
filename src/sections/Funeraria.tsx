@@ -21,21 +21,21 @@ export function Funeraria() {
   return (
     <section id="funeraria" className="scroll-mt-16 bg-ink text-paper">
       <div className="mx-auto max-w-7xl px-4 py-20 md:px-8 md:py-28">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="flex flex-col gap-6">
           <Reveal>
-            <h2 className="font-display text-[clamp(2.4rem,5vw,4rem)] leading-[1.02]">Coronas y arreglos de condolencias</h2>
+            <h2 className="font-display text-[clamp(2.4rem,4.3vw,4rem)] leading-[1.02] lg:whitespace-nowrap">Coronas y arreglos de condolencias</h2>
           </Reveal>
           {/* regresa a la tienda */}
           <a
             href="#arreglos"
-            className="group inline-flex min-h-11 shrink-0 items-center gap-2 self-start text-[0.75rem] font-medium tracking-[0.16em] text-paper/70 uppercase transition-colors hover:text-paper md:self-auto"
+            className="group inline-flex min-h-11 shrink-0 items-center gap-2 self-start text-[0.75rem] font-medium tracking-[0.16em] text-paper/70 uppercase transition-colors hover:text-paper"
           >
             <ArrowUp className="size-4 transition-transform group-hover:-translate-y-0.5" strokeWidth={1.5} />
             Ver arreglos ocasionales
           </a>
         </div>
 
-        <div className="mt-12 grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="mt-12 grid items-center gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
           {/* galería de piezas: la que se ve es la que va en el listón */}
           <Reveal className="min-w-0">
             <ThumbnailGallery
@@ -45,10 +45,10 @@ export function Funeraria() {
             />
           </Reveal>
 
-          {/* gadget: escribe el listón */}
-          <Reveal delay={0.1}>
-            <div className="rounded-md bg-ink-soft/60 p-5 ring-1 ring-paper/10 sm:p-7">
-              <div className="relative flex h-40 items-center justify-center overflow-hidden rounded-md bg-[radial-gradient(ellipse_at_center,#2b2424_0%,#171414_75%)]" aria-hidden="true">
+          {/* gadget: escribe el listón; en compu mide lo mismo que la foto (46px = pie con el nombre de la pieza) */}
+          <Reveal delay={0.1} className="lg:relative lg:self-stretch">
+            <div className="rounded-md bg-ink-soft/60 flex flex-col p-5 ring-1 ring-paper/10 sm:p-7 lg:absolute lg:inset-x-0 lg:top-0 lg:bottom-[46px]">
+              <div className="relative flex h-40 items-center justify-center overflow-hidden lg:h-auto lg:min-h-20 lg:flex-1" aria-hidden="true">
                 {/* listón de satín nacarado: banda al frente, puntas dobladas por detrás */}
                 <div className="liston w-[78%]">
                   <span className="liston-cola liston-cola-izq" />
@@ -57,7 +57,7 @@ export function Funeraria() {
                   <span className="liston-pliegue liston-pliegue-der" />
                   <div className="liston-banda px-6 py-4 text-center">
                     <span className="liston-brillo" />
-                    <span className="liston-texto relative block font-serif text-[clamp(1.1rem,2.2vw,1.45rem)] leading-snug break-words italic">
+                    <span className="liston-texto relative block font-sans font-medium text-[clamp(1.05rem,2vw,1.35rem)] leading-snug break-words">
                       {texto || 'Con cariño, familia García Treviño'}
                     </span>
                   </div>

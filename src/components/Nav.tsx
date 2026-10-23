@@ -4,7 +4,6 @@ import { ChevronRight, Menu, X } from 'lucide-react'
 import { WhatsAppIcon } from '@/components/icons'
 import { CartButton } from '@/components/shop/CartUI'
 import { SocialTooltip } from '@/components/ui/social-media'
-import { StatusPill } from '@/components/StatusPill'
 import { SOCIALS } from '@/lib/socials'
 import { SITE, wa } from '@/lib/site'
 import { cn } from '@/lib/utils'
@@ -165,7 +164,6 @@ export function Nav({ solid = false }: { solid?: boolean }) {
                 Pedir por WhatsApp
               </a>
               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[0.88rem]">
-                <StatusPill />
                 <a href={SITE.phoneHref} className="text-stone">
                   {SITE.phone}
                 </a>

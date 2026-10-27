@@ -14,14 +14,12 @@ export function Footer() {
   return (
     <footer className="bg-ink text-paper">
       <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 md:flex-row md:items-center md:justify-between md:px-8">
-        <div className="flex items-center gap-3">
-          <img src="brand/rosa-blanco.png" alt="" width={600} height={593} loading="lazy" className="size-9 opacity-90" />
-          <div className="leading-tight">
-            <p className="font-display text-lg">Florería La Silla</p>
-            <p className="text-xs text-paper/55">
-              {SITE.address}, {SITE.city}
-            </p>
-          </div>
+        {/* el logo va como imagen (el mismo del menú), no escrito */}
+        <div className="flex flex-col items-start gap-2.5">
+          <img src="brand/logo-horizontal-blanco.png" alt="Florería La Silla" width={1536} height={491} loading="lazy" className="h-11 w-auto" />
+          <p className="text-xs leading-tight text-paper/55">
+            {SITE.address}, {SITE.city}
+          </p>
         </div>
         <nav aria-label="Pie de página">
           <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-paper/70">

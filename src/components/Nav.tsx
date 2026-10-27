@@ -60,12 +60,9 @@ export function Nav({ solid = false }: { solid?: boolean }) {
       )}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 md:px-8" aria-label="Principal">
-        <a href="#inicio" className="flex items-center gap-2.5" aria-label="Florería La Silla, inicio">
-          <img src="brand/rosa-blanco.png" alt="" width={600} height={593} className="size-9 md:size-10" />
-          <span className="flex flex-col leading-none">
-            <span className="font-display text-[0.62rem] tracking-[0.34em] opacity-70">FLORERÍA</span>
-            <span className="font-display text-xl tracking-[0.12em] md:text-[1.4rem]">LA SILLA</span>
-          </span>
+        {/* logo horizontal armado con las piezas del logo oficial (la rosa y las letras tal cual, sin el recuadro) */}
+        <a href="#inicio" className="flex items-center" aria-label="Florería La Silla, inicio">
+          <img src="brand/logo-horizontal-blanco.png" alt="" width={1536} height={491} className="h-12 w-auto object-contain object-left md:h-14" />
         </a>
 
         <ul className="hidden items-center gap-8 lg:flex">
@@ -119,12 +116,8 @@ export function Nav({ solid = false }: { solid?: boolean }) {
             aria-label="Menú"
           >
             <div className="flex items-center justify-between">
-              <a href="#inicio" onClick={() => setOpen(false)} className="flex items-center gap-2.5" aria-label="Florería La Silla, inicio">
-                <img src="brand/rosa-blanco.png" alt="" width={600} height={593} className="size-9" />
-                <span className="flex flex-col leading-none">
-                  <span className="font-display text-[0.62rem] tracking-[0.34em] opacity-70">FLORERÍA</span>
-                  <span className="font-display text-xl tracking-[0.12em]">LA SILLA</span>
-                </span>
+              <a href="#inicio" onClick={() => setOpen(false)} className="flex items-center" aria-label="Florería La Silla, inicio">
+                <img src="brand/logo-horizontal-blanco.png" alt="" width={1536} height={491} className="h-12 w-auto" />
               </a>
               <button type="button" onClick={() => setOpen(false)} className="grid size-11 cursor-pointer place-items-center rounded-full ring-1 ring-ink/15" aria-label="Cerrar menú">
                 <X className="size-5" strokeWidth={1.5} />
